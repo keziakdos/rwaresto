@@ -1,0 +1,51 @@
+name: rwaresto
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rwaresto-app:latest
+    container_name: rwaresto-app
+    restart: unless-stopped
+    init: true
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: file:/data/rwaresto.db
+      UPLOAD_DIR: /data/uploads
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+    ports:
+      - "127.0.0.1:${HOST_PORT:-3107}:3000"
+    volumes:
+      - rwaresto_data:/data
+    networks:
+      - rwaresto_internal
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/config').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      start_period: 40s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  rwaresto_data:
+    name: rwaresto_data
+
+networks:
+  rwaresto_internal:
+    name: rwaresto_internal
+    driver: bridge
