@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Sauvegarde cohérente de la base SQLite + photos téléversées.
+# Sauvegarde cohérente de la base SQLite (sans images).
 # Usage : ./scripts/backup.sh
-# Variables : COMPOSE_FILE (docker-compose.yml), BACKUP_DIR (./backups), KEEP_DAYS (30)
+# Variables : COMPOSE_FILE (docker-compose.yml), BACKUP_DIR (./backups), KEEP_DAYS (10)
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 COMPOSE_FILE="${COMPOSE_FILE:-$ROOT_DIR/docker-compose.yml}"
 BACKUP_DIR="${BACKUP_DIR:-$ROOT_DIR/backups}"
-KEEP_DAYS="${KEEP_DAYS:-30}"
+KEEP_DAYS="${KEEP_DAYS:-10}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 ARCHIVE="rwaresto-$STAMP.tar.gz"
 
@@ -18,7 +18,7 @@ echo "→ Sauvegarde SQLite dans le conteneur…"
 docker compose -f "$COMPOSE_FILE" exec -T app sh -c "
   set -e
   sqlite3 /data/rwaresto.db \".backup '/tmp/rwaresto-backup.db'\"
-  tar -czf '/tmp/$ARCHIVE' -C /tmp rwaresto-backup.db -C /data uploads
+  tar -czf '/tmp/$ARCHIVE' -C /tmp rwaresto-backup.db
   rm -f /tmp/rwaresto-backup.db
 "
 

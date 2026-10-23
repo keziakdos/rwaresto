@@ -82,10 +82,11 @@ Le reverse proxy n'est pas embarqué : le nginx de l'hôte expose le site en HTT
 
 ```bash
 ./scripts/backup.sh
+./scripts/backup-site.sh
 ./scripts/restore.sh backups/rwaresto-AAAAMMJJ-HHMMSS.tar.gz
 ```
 
-La sauvegarde utilise `sqlite3 .backup` pour obtenir un fichier cohérent, puis archive la base et le dossier `uploads`. Conservez les archives hors du VPS et testez régulièrement une restauration.
+La sauvegarde utilise `sqlite3 .backup` pour obtenir une base cohérente. Les images téléversées ne sont pas incluses dans les archives. La sauvegarde locale complète ajoute la configuration du site ; l'envoi Telegram est décrit dans [docs/EXPLOITATION.md](docs/EXPLOITATION.md).
 
 ## Structure
 

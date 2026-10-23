@@ -3,7 +3,8 @@ set -euo pipefail
 
 # Restauration d'une sauvegarde produite par scripts/backup.sh.
 # Usage : ./scripts/restore.sh backups/rwaresto-20260101-120000.tar.gz
-# ATTENTION : arrête l'application et remplace la base + les photos actuelles.
+# ATTENTION : arrête l'application et remplace la base actuelle.
+# Les images ne sont pas incluses dans les nouvelles sauvegardes : /data/uploads est conservé.
 
 if [ $# -ne 1 ] || [ ! -f "$1" ]; then
   echo "Usage : $0 chemin/vers/rwaresto-AAAAMMJJ-HHMMSS.tar.gz" >&2
@@ -28,7 +29,6 @@ docker compose -f "$COMPOSE_FILE" run --rm --no-deps --entrypoint sh app -c "
   set -e
   mkdir -p /data
   rm -f /data/rwaresto.db /data/rwaresto.db-journal /data/rwaresto.db-wal /data/rwaresto.db-shm
-  rm -rf /data/uploads
   tar -xzf /tmp/rwaresto-restore.tar.gz -C /data --strip-components=0
   mv /data/rwaresto-backup.db /data/rwaresto.db
   rm -f /tmp/rwaresto-restore.tar.gz
