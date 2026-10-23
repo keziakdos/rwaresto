@@ -60,15 +60,22 @@ if [ -n "${RCLONE_REMOTE:-}" ]; then
     exit 1
   fi
   REMOTE="${RCLONE_REMOTE%/}"
-  echo "→ Envoi vers Google Drive ($REMOTE)…"
-  rclone mkdir "$REMOTE/data" >/dev/null
-  rclone mkdir "$REMOTE/config" >/dev/null
-  if [ -n "$latest_data" ]; then
-    rclone copy "$latest_data" "$REMOTE/data/" --stats-one-line --stats=30s
+  if [[ "$REMOTE" == *: ]]; then
+    DATA_REMOTE="${REMOTE}data"
+    CONFIG_REMOTE="${REMOTE}config"
+  else
+    DATA_REMOTE="$REMOTE/data"
+    CONFIG_REMOTE="$REMOTE/config"
   fi
-  rclone copy "$CONFIG_DIR/$CONFIG_ARCHIVE" "$REMOTE/config/" --stats-one-line --stats=30s
-  rclone delete "$REMOTE/data" --min-age "${KEEP_DAYS_DATA}d" --include 'rwaresto-*.tar.gz' >/dev/null 2>&1 || true
-  rclone delete "$REMOTE/config" --min-age "${KEEP_DAYS_CONFIG}d" --include 'rwaresto-config-*.tar.gz' >/dev/null 2>&1 || true
+  echo "→ Envoi vers Google Drive ($REMOTE)…"
+  rclone mkdir "$DATA_REMOTE" >/dev/null
+  rclone mkdir "$CONFIG_REMOTE" >/dev/null
+  if [ -n "$latest_data" ]; then
+    rclone copy "$latest_data" "$DATA_REMOTE/" --stats-one-line --stats=30s
+  fi
+  rclone copy "$CONFIG_DIR/$CONFIG_ARCHIVE" "$CONFIG_REMOTE/" --stats-one-line --stats=30s
+  rclone delete "$DATA_REMOTE" --min-age "${KEEP_DAYS_DATA}d" --include 'rwaresto-*.tar.gz' >/dev/null 2>&1 || true
+  rclone delete "$CONFIG_REMOTE" --min-age "${KEEP_DAYS_CONFIG}d" --include 'rwaresto-config-*.tar.gz' >/dev/null 2>&1 || true
 fi
 
 echo "→ Rotation des configurations de plus de $KEEP_DAYS_CONFIG jours…"
@@ -76,6 +83,6 @@ find "$CONFIG_DIR" -maxdepth 1 -name 'rwaresto-config-*.tar.gz' -type f -mtime "
 
 echo "✓ Sauvegarde complète : $CONFIG_DIR/$CONFIG_ARCHIVE"
 if [ -n "${RCLONE_REMOTE:-}" ]; then
-  echo "  Copie distante : ${RCLONE_REMOTE%/}/data et ${RCLONE_REMOTE%/}/config"
+  echo "  Copie distante : ${RCLONE_REMOTE%/} (dossiers data et config)"
 fi
 echo "  Les archives contiennent des secrets (.env) : conservez-les en sécurité."
