@@ -17,12 +17,15 @@ Le site est en production sur `https://rwaresto.rwazap.com`, avec HTTPS, PWA, co
 - Page RGPD et lien dans le footer.
 - Lien « Changer mon mot de passe » dans l'administration.
 - Surveillances HTTP et alertes Telegram.
-- Sauvegardes locales quotidiennes avec rotation des données à 10 jours.
+- Sauvegardes locales quotidiennes sans images, avec rotation des données à 10 jours.
+- Sauvegarde Telegram configurée : envoi tous les 10 jours, archive SQLite sans images, refus au-delà de 30 Mo, confirmation Telegram obligatoire.
+- Premier envoi Telegram testé : archive de 22,9 Ko contenant uniquement `rwaresto-backup.db`, intégrité SQLite vérifiée.
+- Script de vérification HTTP de production ajouté et exécuté avec succès.
 - Documentation : `docs/EXPLOITATION.md`.
 
 ### En cours
 
-- Sauvegarde Telegram tous les 10 jours, sans images, avec limite de 30 Mo et vérification de l'envoi.
+- Vérifier une restauration complète dans un environnement sûr.
 
 ### Décisions
 
@@ -44,16 +47,16 @@ Les journaux OpenCode montrent des erreurs `Cannot connect to API` entre 18:35 e
 
 ### Haute priorité
 
-1. Déployer et tester la sauvegarde Telegram.
-2. Tester une restauration réelle dans un environnement sûr.
-3. Valider les procédures de sauvegarde et de restauration après le premier envoi.
+1. Tester une restauration réelle dans un environnement sûr.
+2. Vérifier le prochain envoi Telegram automatique après 10 jours.
+3. Valider les procédures de sauvegarde et de restauration.
 
 ### Priorité moyenne
 
 4. Remplacer les visuels provisoires par de vraies photos.
 5. Remplacer les prix/descriptions provisoires par la carte définitive.
 6. Imprimer et vérifier les QR codes des tables.
-7. Faire un audit final mobile, tablette, desktop, mode sombre et accessibilité.
+7. Faire un audit final mobile, tablette, desktop, mode sombre et accessibilité (le script HTTP est déjà en place).
 
 ### Plus tard
 
@@ -68,5 +71,6 @@ Les journaux OpenCode montrent des erreurs `Cannot connect to API` entre 18:35 e
 
 - Les archives de configuration contiennent `.env` : ne jamais les publier.
 - Les images ne sont pas sauvegardées. Une perte totale du VPS nécessiterait de les recréer.
+- Les anciennes archives locales peuvent encore contenir des images jusqu'à leur rotation à 10 jours.
 - Le bot Telegram et son token ne doivent jamais être commités.
 - Ne jamais supprimer le volume `rwaresto_data` sans sauvegarde.

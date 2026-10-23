@@ -45,6 +45,7 @@ npm run typecheck
 npm run lint
 npm run test
 npm run build
+SITE_URL=https://rwaresto.rwazap.com ./scripts/smoke-test.sh
 ```
 
 La CI GitHub Actions exécute ces étapes et construit l'image Docker.
