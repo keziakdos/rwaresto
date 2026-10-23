@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/nunito";
-import "@fontsource/baloo-2/500.css";
-import "@fontsource/baloo-2/600.css";
-import "@fontsource/baloo-2/700.css";
+import "@fontsource-variable/dm-sans";
+import "@fontsource-variable/fraunces";
+import "@fontsource-variable/fraunces/opsz.css";
 import "./globals.css";
 import { SiteProvider } from "@/components/site-provider";
 import { CartProvider } from "@/components/cart-provider";
 import { ToastProvider } from "@/components/toast-provider";
 import { ServiceWorker } from "@/components/service-worker";
+import { ThemeScript } from "@/components/theme-script";
 import { getPublicConfig } from "@/lib/settings";
 import { themeVariables } from "@/lib/colors";
 
@@ -61,7 +61,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const style = themeVariables(config.primaryColor, config.accentColor) as React.CSSProperties;
 
   return (
-    <html lang="fr" style={style}>
+    <html lang="fr" style={style} suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body className="antialiased">
         <SiteProvider config={config}>
           <ToastProvider>

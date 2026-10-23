@@ -20,8 +20,8 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@fontsource-variable/nunito": "^5.3.0",
-    "@fontsource/baloo-2": "^5.3.0",
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
     "@prisma/client": "6.19.3",
     "bcryptjs": "3.0.3",
     "lucide-react": "0.561.0",
