@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Clock3, MapPin, UtensilsCrossed } from "lucide-react";
 import { getPublicConfig } from "@/lib/settings";
@@ -6,7 +7,15 @@ export async function PublicFooter() {
   const config = await getPublicConfig();
   return (
     <footer className="no-print mt-20 px-3 sm:px-6">
-      <div className="mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-[#12352a] text-[#fbf5ea] shadow-lift dark:bg-[#0d281f]">
+      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-[#12352a] text-[#fbf5ea] shadow-lift dark:bg-[#0d281f]">
+        <Image
+          src="/images/drink.jpg"
+          alt=""
+          fill
+          sizes="(max-width: 1152px) 100vw, 1152px"
+          className="object-cover object-center opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0b241b]/90 via-[#12352a]/75 to-[#12352a]/55" />
         <div className="relative px-6 py-10 sm:px-10 sm:py-12">
           <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-brand/20 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-gold/10 blur-3xl" />

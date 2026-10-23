@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -164,10 +165,19 @@ export function MenuExperience({
 
   return (
     <div className="pb-32">
-      <section className="relative overflow-hidden bg-[#12352a] text-white dark:bg-[#0d281f]">
-        <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full border-[48px] border-white/[0.04]" />
+      <section className="relative isolate overflow-hidden bg-[#0d281f] text-white dark:bg-[#0a2119]">
+        <Image
+          src="/images/backglound.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[58%_50%]"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(8,28,21,.98)_0%,rgba(8,28,21,.9)_42%,rgba(8,28,21,.4)_78%,rgba(8,28,21,.55)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b241b] via-transparent to-[#0b241b]/25" />
         <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-brand/25 blur-3xl" />
-        <div className="relative mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:px-6 sm:pb-20 sm:pt-8">
+        <div className="relative mx-auto w-full max-w-6xl px-4 pb-20 pt-6 sm:px-6 sm:pb-24 sm:pt-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <Link href="/" className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-2 text-xs font-bold text-white/75 transition hover:bg-white/10 hover:text-white">
               <ArrowLeft className="h-4 w-4" />
@@ -201,11 +211,19 @@ export function MenuExperience({
                 Des bols généreux, des assiettes du voyage et des douceurs maison. Personnalisez chaque plat selon vos envies.
               </p>
             </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
-              <span className={`status-dot ${site.isOpen ? "text-emerald-400" : "text-red-400"}`} />
-              <div>
-                <p className="text-xs font-extrabold">{site.isOpen ? "La cuisine est ouverte" : "Commandes fermées"}</p>
-                <p className="text-[10px] text-white/45">{site.isOpen ? "Préparation minute" : site.hoursText}</p>
+            <div className="flex flex-col items-start gap-3 lg:items-end">
+              <div className="hidden w-48 overflow-hidden rounded-[1.5rem] border border-white/15 bg-white/10 p-1.5 shadow-soft backdrop-blur lg:block">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.1rem]">
+                  <Image src="/images/ugali.jpg" alt="Grillades et accompagnements maison" fill sizes="192px" className="object-cover" />
+                </div>
+                <p className="px-1.5 pb-0.5 pt-2 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#f0b27a]">Cuisine maison</p>
+              </div>
+              <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
+                <span className={`status-dot ${site.isOpen ? "text-emerald-400" : "text-red-400"}`} />
+                <div>
+                  <p className="text-xs font-extrabold">{site.isOpen ? "La cuisine est ouverte" : "Commandes fermées"}</p>
+                  <p className="text-[10px] text-white/45">{site.isOpen ? "Préparation minute" : site.hoursText}</p>
+                </div>
               </div>
             </div>
           </div>

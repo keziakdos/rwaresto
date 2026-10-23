@@ -27,22 +27,22 @@ type Mode = "dine_in" | "takeaway";
 
 const HIGHLIGHTS = [
   {
-    image: "/images/bowl-mafe.webp",
-    title: "Bols signature",
-    text: "Des sauces mijotées lentement, des textures généreuses.",
+    image: "/images/muceli.jpg",
+    title: "La table familiale",
+    text: "Des plats généreux posés au centre, à partager sans compter.",
+    icon: Leaf,
+  },
+  {
+    image: "/images/ugali.jpg",
+    title: "Le feu & les braises",
+    text: "Grillades, sauces profondes et accompagnements réconfortants.",
     icon: Flame,
   },
   {
-    image: "/images/assiette-thieb.webp",
-    title: "Assiettes du voyage",
-    text: "Le réconfort des recettes familiales, dressées avec soin.",
+    image: "/images/drink.jpg",
+    title: "Les rituels de table",
+    text: "Calebasses, épices et boissons pour prolonger le moment.",
     icon: Sparkles,
-  },
-  {
-    image: "/images/dessert-degue.webp",
-    title: "Douceurs maison",
-    text: "Une note sucrée pour finir en beauté.",
-    icon: Leaf,
   },
 ];
 
@@ -118,20 +118,32 @@ export function HomeExperience({
 
   return (
     <div className="overflow-hidden">
-      <section className="relative px-4 pb-10 pt-7 sm:px-6 sm:pb-16 sm:pt-12">
-        <div className="pointer-events-none absolute -left-32 top-12 h-80 w-80 rounded-full bg-brand/10 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 top-0 h-96 w-96 rounded-full bg-forest/10 blur-3xl" />
+      <section className="relative isolate overflow-hidden bg-[#0d281f] text-white">
+        <Image
+          src="/images/backglound.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[62%_50%]"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(8,28,21,.97)_0%,rgba(8,28,21,.9)_38%,rgba(8,28,21,.45)_72%,rgba(8,28,21,.62)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b241b] via-transparent to-[#0b241b]/20" />
+        <div className="pointer-events-none absolute -left-28 top-20 h-80 w-80 rounded-full bg-[#d5a24b]/15 blur-3xl" />
+        <div className="pointer-events-none absolute -right-20 bottom-0 h-96 w-96 rounded-full bg-brand/20 blur-3xl" />
 
-        <div className="relative mx-auto grid w-full max-w-6xl items-center gap-10 lg:grid-cols-[1.04fr_.96fr] lg:gap-14">
+        <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14 lg:grid-cols-[1.04fr_.96fr] lg:gap-14 lg:pb-24 lg:pt-20">
           <div className="animate-fade-up">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-forest/10 bg-forest-soft px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-forest">
-                <QrCode className="h-3.5 w-3.5" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-white/85 backdrop-blur">
+                <QrCode className="h-3.5 w-3.5 text-[#f0b27a]" />
                 Commande à table
               </span>
               <span
-                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-extrabold ${
-                  site.isOpen ? "bg-emerald-100 text-emerald-900" : "bg-red-100 text-red-900"
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-extrabold backdrop-blur ${
+                  site.isOpen
+                    ? "border-emerald-300/20 bg-emerald-400/15 text-emerald-100"
+                    : "border-red-300/20 bg-red-400/15 text-red-100"
                 }`}
               >
                 <span className="status-dot" />
@@ -145,23 +157,26 @@ export function HomeExperience({
               ) : null}
             </div>
 
-            <p className="mt-7 flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.22em] text-brand">
-              <span className="h-px w-8 bg-brand/40" />
+            <p className="mt-7 flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.22em] text-[#f0b27a]">
+              <span className="h-px w-8 bg-[#f0b27a]/45" />
               {site.restaurantName}
             </p>
-            <h1 className="mt-3 max-w-xl text-balance font-display text-[2.8rem] font-semibold leading-[0.98] text-ink sm:text-6xl lg:text-[4.4rem]">
+            <h1 className="mt-3 max-w-xl text-balance font-display text-[2.85rem] font-semibold leading-[0.98] text-white sm:text-6xl lg:text-[4.35rem]">
               {site.tagline}
             </h1>
-            <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-muted sm:text-lg">
+            <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/70 sm:text-lg">
               {site.welcomeMessage}
             </p>
 
             <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:items-center">
-              <a href="#commander" className="btn-primary min-h-14 px-7 text-base">
+              <a href="#commander" className="btn-primary min-h-14 px-7 text-base shadow-glow">
                 Commander maintenant
                 <ArrowRight className="h-5 w-5" />
               </a>
-              <Link href="/menu" className="btn-secondary min-h-14 px-6 text-base">
+              <Link
+                href="/menu"
+                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 text-base font-extrabold text-white shadow-card backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/15"
+              >
                 <UtensilsCrossed className="h-4 w-4" />
                 Parcourir la carte
               </Link>
@@ -173,57 +188,50 @@ export function HomeExperience({
                 { icon: Clock, title: "Suivi live", text: "Statut en direct" },
                 { icon: Wallet, title: "À la caisse", text: "Sans paiement en ligne" },
               ].map((item) => (
-                <div key={item.title} className="rounded-2xl border border-line/70 bg-surface/70 px-3 py-3 backdrop-blur">
-                  <item.icon className="h-4 w-4 text-brand" />
-                  <p className="mt-2 text-[11px] font-extrabold text-ink">{item.title}</p>
-                  <p className="text-[10px] font-medium text-muted">{item.text}</p>
+                <div key={item.title} className="rounded-2xl border border-white/10 bg-white/[0.07] px-3 py-3 backdrop-blur">
+                  <item.icon className="h-4 w-4 text-[#f0b27a]" />
+                  <p className="mt-2 text-[11px] font-extrabold text-white">{item.title}</p>
+                  <p className="text-[10px] font-medium text-white/50">{item.text}</p>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="relative mx-auto w-full max-w-[30rem] animate-fade-up lg:max-w-none [animation-delay:120ms]">
-            <div className="absolute -inset-3 -rotate-2 rounded-[3rem] border border-brand/15 bg-brand-soft/40" />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-sand shadow-lift sm:aspect-[5/5.2]">
+            <div className="absolute -inset-3 -rotate-2 rounded-[3rem] border border-white/10 bg-white/[0.04]" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/15 bg-white/5 shadow-2xl sm:aspect-[5/5.2]">
               <Image
-                src="/images/bowl-yassa.webp"
-                alt="Bowl Poulet Yassa généreux, riz parfumé et légumes croquants"
+                src="/images/matoke.jpg"
+                alt="Plat mijoté généreux, servi avec des épices et des légumes frais"
                 fill
                 priority
                 sizes="(max-width: 1024px) 90vw, 560px"
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d]/75 via-transparent to-transparent" />
-              <div className="absolute inset-x-5 bottom-5 rounded-[1.4rem] border border-white/20 bg-black/25 p-4 text-white backdrop-blur-md">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/60">La signature</p>
-                <div className="mt-1 flex items-end justify-between gap-3">
-                  <div>
-                    <p className="font-display text-2xl font-semibold leading-none">Bowl Poulet Yassa</p>
-                    <p className="mt-1.5 text-xs font-medium text-white/70">Citron, oignons confits, légumes croquants</p>
-                  </div>
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-forest">
-                    <ArrowRight className="h-4 w-4" />
-                  </span>
-                </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#120c08]/85 via-transparent to-[#120c08]/10" />
+              <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/30 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/90 backdrop-blur">
+                <Flame className="h-3.5 w-3.5 text-[#f0b27a]" />
+                Cuisine du feu
+              </span>
+              <div className="absolute inset-x-4 bottom-4 rounded-[1.4rem] border border-white/15 bg-black/35 p-4 text-white backdrop-blur-md">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#f0b27a]">L&apos;esprit maison</p>
+                <p className="mt-1.5 font-display text-2xl font-semibold leading-tight">
+                  Des plats mijotés, posés au centre.
+                </p>
+                <p className="mt-1.5 text-xs font-medium leading-relaxed text-white/65">
+                  Des recettes généreuses, des épices torréfiées et de la chaleur à partager.
+                </p>
+                <Link href="/menu" className="mt-3 inline-flex items-center gap-1.5 text-xs font-extrabold text-[#f0b27a]">
+                  Voir la carte
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
               </div>
             </div>
 
-            <div className="absolute -left-3 bottom-24 hidden w-40 rounded-3xl border border-white/60 bg-surface p-3 shadow-soft sm:block lg:-left-10">
-              <div className="flex items-center gap-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold/20 text-amber-700">
-                  <Sparkles className="h-4 w-4" />
-                </span>
-                <div>
-                  <p className="text-xs font-extrabold text-ink">Épices maison</p>
-                  <p className="text-[10px] text-muted">Torréfiées chaque jour</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="absolute -right-2 top-8 hidden rounded-2xl border border-white/60 bg-surface/95 px-3.5 py-3 shadow-card backdrop-blur sm:block lg:-right-6">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-muted">Service</p>
-              <p className="mt-0.5 flex items-center gap-1.5 font-display text-lg font-semibold text-forest">
-                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            <div className="absolute -right-2 top-8 hidden rounded-2xl border border-white/15 bg-black/30 px-3.5 py-3 text-white shadow-card backdrop-blur sm:block lg:-right-6">
+              <p className="text-[10px] font-bold uppercase tracking-wide text-white/45">Service</p>
+              <p className="mt-0.5 flex items-center gap-1.5 font-display text-lg font-semibold text-white">
+                <span className={`h-2 w-2 rounded-full ${site.isOpen ? "bg-emerald-400" : "bg-red-400"}`} />
                 {site.isOpen ? "En salle" : "Fermé"}
               </p>
             </div>
@@ -236,6 +244,8 @@ export function HomeExperience({
           <div className="card-elevated overflow-hidden">
             <div className="grid lg:grid-cols-[.9fr_1.1fr]">
               <div className="relative overflow-hidden bg-forest px-5 py-7 text-white sm:px-7 lg:px-8 lg:py-9 dark:bg-[#102b22]">
+                <Image src="/images/ugali.jpg" alt="" fill sizes="(max-width: 1024px) 100vw, 480px" className="object-cover opacity-35" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0b241b]/90 via-[#0b241b]/70 to-[#0b241b]/40" />
                 <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full border-[28px] border-white/5" />
                 <div className="pointer-events-none absolute -bottom-20 -left-10 h-52 w-52 rounded-full bg-brand/20 blur-3xl" />
                 <div className="relative">
@@ -459,17 +469,21 @@ export function HomeExperience({
         <div className="mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] border border-line/70 bg-surface shadow-card">
           <div className="grid lg:grid-cols-[.8fr_1.2fr]">
             <div className="relative overflow-hidden bg-[#12352a] p-6 text-white sm:p-9 dark:bg-[#0d281f]">
+              <Image src="/images/muceli.jpg" alt="" fill sizes="(max-width: 1024px) 100vw, 420px" className="object-cover opacity-35" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b241b]/90 via-[#0b241b]/70 to-[#0b241b]/40" />
               <div className="pointer-events-none absolute -bottom-16 -right-16 h-56 w-56 rounded-full bg-brand/25 blur-3xl" />
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/45">Simple & fluide</p>
-              <h2 className="mt-2 font-display text-3xl font-semibold leading-tight sm:text-4xl">
-                Trois étapes, zéro friction.
-              </h2>
-              <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/60">
-                Chaque personne à la table peut commander avec son prénom ou pseudo et régler sa propre commande.
-              </p>
-              <div className="mt-8 flex items-center gap-2 text-[11px] font-bold text-white/50">
-                <span className="h-px w-10 bg-white/20" />
-                À votre rythme
+              <div className="relative">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/45">Simple & fluide</p>
+                <h2 className="mt-2 font-display text-3xl font-semibold leading-tight sm:text-4xl">
+                  Trois étapes, zéro friction.
+                </h2>
+                <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/60">
+                  Chaque personne à la table peut commander avec son prénom ou pseudo et régler sa propre commande.
+                </p>
+                <div className="mt-8 flex items-center gap-2 text-[11px] font-bold text-white/50">
+                  <span className="h-px w-10 bg-white/20" />
+                  À votre rythme
+                </div>
               </div>
             </div>
             <div className="grid gap-0 sm:grid-cols-3">

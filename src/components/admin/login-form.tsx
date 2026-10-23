@@ -48,6 +48,14 @@ export function LoginForm() {
 
       <div className="relative grid w-full max-w-4xl overflow-hidden rounded-[2rem] border border-line/70 bg-surface shadow-lift lg:grid-cols-[.9fr_1.1fr]">
         <div className="relative hidden overflow-hidden bg-[#12352a] p-8 text-white dark:bg-[#0d281f] lg:flex lg:flex-col lg:justify-between">
+          <Image
+            src="/images/backglound.jpg"
+            alt=""
+            fill
+            sizes="40vw"
+            className="object-cover object-center opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#081c15]/95 via-[#0b241b]/80 to-[#0b241b]/45" />
           <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full border-[38px] border-white/[0.05]" />
           <div className="pointer-events-none absolute -bottom-20 -left-16 h-64 w-64 rounded-full bg-brand/20 blur-3xl" />
           <div className="relative">

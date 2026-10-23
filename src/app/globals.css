@@ -290,6 +290,14 @@ body {
   background-color: rgb(var(--color-surface-rgb));
 }
 
+.dark .btn-primary {
+  color: #1a120c;
+}
+
+.dark .btn-forest {
+  color: #0d281f;
+}
+
 .dark .bg-stone-50,
 .dark .bg-stone-100 {
   background-color: rgb(var(--color-sand-rgb));
