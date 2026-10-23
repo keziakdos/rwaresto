@@ -24,6 +24,7 @@ docker compose -f "$COMPOSE_FILE" exec -T app sh -c "
 
 echo "→ Copie de l'archive vers $BACKUP_DIR…"
 docker compose -f "$COMPOSE_FILE" cp "app:/tmp/$ARCHIVE" "$BACKUP_DIR/$ARCHIVE"
+chmod 600 "$BACKUP_DIR/$ARCHIVE"
 docker compose -f "$COMPOSE_FILE" exec -T app rm -f "/tmp/$ARCHIVE"
 
 echo "→ Rotation des archives de plus de $KEEP_DAYS jours…"
