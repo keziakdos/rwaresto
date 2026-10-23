@@ -390,7 +390,9 @@ export function SettingsManager() {
                   </button>
                 ))}
               </div>
-              <p className="mt-1 text-[10px] text-muted">Aucun jour sélectionné = ouvert tous les jours.</p>
+              <p className="mt-1 text-[10px] text-muted">
+                Aucun jour sélectionné = ouvert tous les jours. Une fermeture après minuit est gérée automatiquement.
+              </p>
             </div>
             <div className="mt-3">
               <label htmlFor="hours-text" className="admin-label">
@@ -401,7 +403,7 @@ export function SettingsManager() {
                 value={settings.hoursText}
                 onChange={(event) => set("hoursText", event.target.value.slice(0, 200))}
                 className="field"
-                placeholder="Tous les jours · 11h00 – 22h00"
+                placeholder="Tous les jours · 09h00 – 01h00"
               />
             </div>
           </section>

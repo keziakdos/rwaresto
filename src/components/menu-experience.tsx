@@ -99,17 +99,33 @@ export function MenuExperience({
   const filteredCategories: MenuCategory[] = useMemo(() => {
     if (!data) return [];
     const term = query.trim().toLowerCase();
-    if (!term) return data.categories;
-    return data.categories
-      .map((category) => ({
-        ...category,
-        products: category.products.filter(
-          (product) =>
-            product.name.toLowerCase().includes(term) ||
-            product.description.toLowerCase().includes(term),
-        ),
-      }))
-      .filter((category) => category.products.length > 0);
+    const matches = (product: MenuProduct) =>
+      !term ||
+      product.name.toLowerCase().includes(term) ||
+      product.description.toLowerCase().includes(term);
+    const base = term
+      ? data.categories
+          .map((category) => ({
+            ...category,
+            products: category.products.filter(matches),
+          }))
+          .filter((category) => category.products.length > 0)
+      : data.categories;
+    const veganProducts = data.categories
+      .flatMap((category) => category.products)
+      .filter((product) => product.badges.vegan && matches(product));
+    const veganCategory: MenuCategory | null = veganProducts.length
+      ? {
+          id: "vegan",
+          name: "Végétalien",
+          slug: "vegan",
+          image: "/images/muceli.jpg",
+          availableFrom: null,
+          availableTo: null,
+          products: veganProducts,
+        }
+      : null;
+    return veganCategory ? [...base, veganCategory] : base;
   }, [data, query]);
 
   useEffect(() => {
@@ -172,10 +188,10 @@ export function MenuExperience({
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[58%_50%]"
+          className="object-cover object-[56%_60%]"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(8,28,21,.98)_0%,rgba(8,28,21,.9)_42%,rgba(8,28,21,.4)_78%,rgba(8,28,21,.55)_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0b241b] via-transparent to-[#0b241b]/25" />
+        <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(8,28,21,.93)_0%,rgba(8,28,21,.78)_42%,rgba(8,28,21,.28)_78%,rgba(8,28,21,.46)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b241b]/85 via-transparent to-[#0b241b]/15" />
         <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-brand/25 blur-3xl" />
         <div className="relative mx-auto w-full max-w-6xl px-4 pb-20 pt-6 sm:px-6 sm:pb-24 sm:pt-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -221,8 +237,12 @@ export function MenuExperience({
               <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
                 <span className={`status-dot ${site.isOpen ? "text-emerald-400" : "text-red-400"}`} />
                 <div>
-                  <p className="text-xs font-extrabold">{site.isOpen ? "La cuisine est ouverte" : "Commandes fermées"}</p>
-                  <p className="text-[10px] text-white/45">{site.isOpen ? "Préparation minute" : site.hoursText}</p>
+                  <p className="text-xs font-extrabold">
+                    {data?.service.label || (site.isOpen ? "La cuisine est ouverte" : "Commandes fermées")}
+                  </p>
+                  <p className="text-[10px] text-white/45">
+                    {data?.service.note || (site.isOpen ? "Préparation minute" : site.hoursText)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -264,6 +284,13 @@ export function MenuExperience({
         <div className="mx-auto mt-4 w-full max-w-6xl px-4 sm:px-6">
           <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
             {site.closedReason || "Les commandes sont momentanément fermées."}
+          </div>
+        </div>
+      ) : data?.service.mode === "breakfast" ? (
+        <div className="mx-auto mt-4 w-full max-w-6xl px-4 sm:px-6">
+          <div className="flex flex-col gap-1 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 sm:flex-row sm:items-center sm:justify-between">
+            <span>Petit-déjeuner servi jusqu&apos;à 11h.</span>
+            <span className="text-xs font-bold text-amber-800">La carte complète prend le relais à 11h.</span>
           </div>
         </div>
       ) : null}
@@ -345,13 +372,27 @@ export function MenuExperience({
                   aria-labelledby={`title-${category.id}`}
                 >
                   <div className="mb-4 flex items-center gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-brand-dark">
-                      <Icon className="h-5 w-5" />
-                    </span>
+                    {category.image ? (
+                      <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-2xl border border-line/60 bg-sand shadow-card sm:h-16 sm:w-24">
+                        <Image src={category.image} alt="" fill sizes="96px" className="object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
+                      </div>
+                    ) : (
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-brand-dark">
+                        <Icon className="h-5 w-5" />
+                      </span>
+                    )}
                     <div className="min-w-0 flex-1">
-                      <h2 id={`title-${category.id}`} className="section-title leading-none">
-                        {category.name}
-                      </h2>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h2 id={`title-${category.id}`} className="section-title leading-none">
+                          {category.name}
+                        </h2>
+                        {category.availableFrom && category.availableTo ? (
+                          <span className="rounded-full bg-sand px-2 py-0.5 text-[9px] font-extrabold text-muted">
+                            {category.availableFrom.replace(":", "h")} – {category.availableTo.replace(":", "h")}
+                          </span>
+                        ) : null}
+                      </div>
                       <p className="mt-1 text-[11px] font-semibold text-muted">
                         {category.products.length} plat{category.products.length > 1 ? "s" : ""} à découvrir
                       </p>

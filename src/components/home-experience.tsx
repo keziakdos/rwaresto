@@ -125,10 +125,10 @@ export function HomeExperience({
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[62%_50%]"
+          className="object-cover object-[55%_62%]"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(8,28,21,.97)_0%,rgba(8,28,21,.9)_38%,rgba(8,28,21,.45)_72%,rgba(8,28,21,.62)_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0b241b] via-transparent to-[#0b241b]/20" />
+        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(8,28,21,.92)_0%,rgba(8,28,21,.78)_38%,rgba(8,28,21,.28)_72%,rgba(8,28,21,.48)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b241b]/85 via-transparent to-[#0b241b]/10" />
         <div className="pointer-events-none absolute -left-28 top-20 h-80 w-80 rounded-full bg-[#d5a24b]/15 blur-3xl" />
         <div className="pointer-events-none absolute -right-20 bottom-0 h-96 w-96 rounded-full bg-brand/20 blur-3xl" />
 
@@ -182,7 +182,12 @@ export function HomeExperience({
               </Link>
             </div>
 
-            <div className="mt-8 grid max-w-lg grid-cols-3 gap-2">
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3.5 py-2 text-[11px] font-semibold text-white/70 backdrop-blur">
+              <Clock className="h-3.5 w-3.5 text-[#f0b27a]" />
+              Petit-déjeuner de 9h à 11h · carte complète dès 11h
+            </div>
+
+            <div className="mt-5 grid max-w-lg grid-cols-3 gap-2">
               {[
                 { icon: ChefHat, title: "Fait minute", text: "Cuisiné sur place" },
                 { icon: Clock, title: "Suivi live", text: "Statut en direct" },

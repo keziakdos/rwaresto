@@ -2,6 +2,9 @@ export type AdminCategory = {
   id: string;
   name: string;
   slug: string;
+  image: string | null;
+  availableFrom: string | null;
+  availableTo: string | null;
   sortOrder: number;
   active: boolean;
   _count: { products: number };
@@ -19,6 +22,7 @@ export type AdminProduct = {
   hidden: boolean;
   archived: boolean;
   vegetarian: boolean;
+  vegan: boolean;
   spicy: boolean;
   halal: boolean;
   isNew: boolean;

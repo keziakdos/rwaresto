@@ -25,6 +25,7 @@ export type MenuProduct = {
   available: boolean;
   badges: {
     vegetarian: boolean;
+    vegan: boolean;
     spicy: boolean;
     halal: boolean;
     isNew: boolean;
@@ -36,9 +37,19 @@ export type MenuCategory = {
   id: string;
   name: string;
   slug: string;
+  image: string | null;
+  availableFrom: string | null;
+  availableTo: string | null;
   products: MenuProduct[];
+};
+
+export type MenuService = {
+  mode: "breakfast" | "full" | "closed";
+  label: string;
+  note: string;
 };
 
 export type MenuData = {
   categories: MenuCategory[];
+  service: MenuService;
 };

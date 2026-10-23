@@ -14,8 +14,13 @@ import { publish } from "@/lib/realtime";
 
 export const dynamic = "force-dynamic";
 
+const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Heure invalide.");
+
 const schema = z.object({
   name: z.string().trim().min(2).max(50).optional(),
+  image: z.string().trim().max(500).nullable().optional(),
+  availableFrom: timeSchema.nullable().optional(),
+  availableTo: timeSchema.nullable().optional(),
   active: z.boolean().optional(),
 });
 

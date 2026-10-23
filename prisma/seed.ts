@@ -54,13 +54,13 @@ async function ensureSettings() {
     logoUrl: "",
     primaryColor: "#C4512C",
     accentColor: "#234D3C",
-    openTime: "11:00",
-    closeTime: "22:00",
+    openTime: "09:00",
+    closeTime: "01:00",
     closedDays: "",
     manualOpen: "true",
     address: "12 place des Saveurs",
     phone: "",
-    hoursText: "Tous les jours · 11h00 – 22h00",
+    hoursText: "Tous les jours · 09h00 – 01h00",
   };
 
   for (const [key, value] of Object.entries(defaults)) {
@@ -82,7 +82,14 @@ async function ensureTables() {
   }
 }
 
-type SeedCategory = { name: string; slug: string; sortOrder: number };
+type SeedCategory = {
+  name: string;
+  slug: string;
+  sortOrder: number;
+  image?: string;
+  availableFrom?: string;
+  availableTo?: string;
+};
 type SeedProduct = {
   slug: string;
   name: string;
@@ -91,16 +98,53 @@ type SeedProduct = {
   category: string;
   image: string;
   vegetarian?: boolean;
+  vegan?: boolean;
   spicy?: boolean;
   halal?: boolean;
   isNew?: boolean;
 };
 
 const categories: SeedCategory[] = [
-  { name: "Bowls", slug: "bowls", sortOrder: 0 },
-  { name: "Assiettes", slug: "assiettes", sortOrder: 1 },
-  { name: "Boissons", slug: "boissons", sortOrder: 2 },
-  { name: "Desserts", slug: "desserts", sortOrder: 3 },
+  {
+    name: "Petit-déjeuner",
+    slug: "petit-dejeuner",
+    sortOrder: -1,
+    image: "/images/drink.jpg",
+    availableFrom: "09:00",
+    availableTo: "11:00",
+  },
+  {
+    name: "Bowls",
+    slug: "bowls",
+    sortOrder: 0,
+    image: "/images/matoke.jpg",
+    availableFrom: "11:00",
+    availableTo: "01:00",
+  },
+  {
+    name: "Assiettes",
+    slug: "assiettes",
+    sortOrder: 1,
+    image: "/images/ugali.jpg",
+    availableFrom: "11:00",
+    availableTo: "01:00",
+  },
+  {
+    name: "Boissons",
+    slug: "boissons",
+    sortOrder: 2,
+    image: "/images/drink.jpg",
+    availableFrom: "09:00",
+    availableTo: "01:00",
+  },
+  {
+    name: "Desserts",
+    slug: "desserts",
+    sortOrder: 3,
+    image: "/images/dessert-degue.webp",
+    availableFrom: "09:00",
+    availableTo: "01:00",
+  },
 ];
 
 const products: SeedProduct[] = [
@@ -226,12 +270,73 @@ const products: SeedProduct[] = [
     image: "/images/dessert-fondant.webp",
     vegetarian: true,
   },
+  {
+    slug: "rituel-du-matin",
+    name: "Rituel du matin",
+    description:
+      "Thé ou café, cookie maison et fruits frais pour démarrer la journée.",
+    priceCents: 590,
+    category: "petit-dejeuner",
+    image: "/images/drink.jpg",
+    vegetarian: true,
+    isNew: true,
+  },
+  {
+    slug: "the-citronne",
+    name: "Thé citronné",
+    description: "Thé noir infusé, citron frais et une pointe de miel.",
+    priceCents: 300,
+    category: "petit-dejeuner",
+    image: "/images/drink.jpg",
+    vegetarian: true,
+    vegan: true,
+  },
+  {
+    slug: "cookie-maison",
+    name: "Cookie maison",
+    description: "Cookie moelleux au chocolat, préparé chaque matin.",
+    priceCents: 250,
+    category: "petit-dejeuner",
+    image: "/images/dessert-fondant.webp",
+    vegetarian: true,
+  },
+  {
+    slug: "matoke-boeuf",
+    name: "Matoke & Bœuf",
+    description:
+      "Bananes plantains mijotées avec bœuf, tomates et épices douces.",
+    priceCents: 1490,
+    category: "assiettes",
+    image: "/images/matoke.jpg",
+    halal: true,
+    isNew: true,
+  },
+  {
+    slug: "ugali-grillades",
+    name: "Ugali & Grillades",
+    description:
+      "Ugali fondant, grillades marinées et sauce arachide relevée.",
+    priceCents: 1590,
+    category: "assiettes",
+    image: "/images/ugali.jpg",
+    spicy: true,
+    isNew: true,
+  },
+  {
+    slug: "muceli-vegetal",
+    name: "Muceli Végétalien",
+    description:
+      "Riz, légumes verts, haricots et sauce maison : généreux et 100% végétal.",
+    priceCents: 1290,
+    category: "assiettes",
+    image: "/images/muceli.jpg",
+    vegetarian: true,
+    vegan: true,
+    isNew: true,
+  },
 ];
 
-async function seedCatalog() {
-  const flag = await prisma.setting.findUnique({ where: { key: DEMO_FLAG } });
-  if (flag?.value === "1") return;
-
+async function ensureCategorySchedules(): Promise<Map<string, string>> {
   const categoryIds = new Map<string, string>();
   for (const category of categories) {
     const row = await prisma.category.upsert({
@@ -239,8 +344,21 @@ async function seedCatalog() {
       update: {},
       create: category,
     });
+    const patch: Record<string, string> = {};
+    if (!row.image && category.image) patch.image = category.image;
+    if (!row.availableFrom && category.availableFrom) patch.availableFrom = category.availableFrom;
+    if (!row.availableTo && category.availableTo) patch.availableTo = category.availableTo;
+    if (Object.keys(patch).length) {
+      await prisma.category.update({ where: { id: row.id }, data: patch });
+    }
     categoryIds.set(category.slug, row.id);
   }
+  return categoryIds;
+}
+
+async function seedCatalog(categoryIds: Map<string, string>) {
+  const flag = await prisma.setting.findUnique({ where: { key: DEMO_FLAG } });
+  if (flag?.value === "1") return;
 
   const protein = await prisma.optionGroup.upsert({
     where: { id: "seed-group-protein" },
@@ -346,6 +464,7 @@ async function seedCatalog() {
         categoryId,
         image: product.image,
         vegetarian: product.vegetarian ?? false,
+        vegan: product.vegan ?? false,
         spicy: product.spicy ?? false,
         halal: product.halal ?? false,
         isNew: product.isNew ?? false,
@@ -356,7 +475,7 @@ async function seedCatalog() {
     const groups: [string, number][] =
       product.category === "boissons"
         ? [[drinkSize.id, 0]]
-        : product.category === "desserts"
+        : product.category === "desserts" || product.category === "petit-dejeuner"
           ? []
           : [
               [protein.id, 0],
@@ -382,11 +501,75 @@ async function seedCatalog() {
   });
 }
 
+const SERVICE_PRODUCT_SLUGS = [
+  "rituel-du-matin",
+  "the-citronne",
+  "cookie-maison",
+  "matoke-boeuf",
+  "ugali-grillades",
+  "muceli-vegetal",
+];
+
+async function seedServiceCatalog(categoryIds: Map<string, string>) {
+  const flag = await prisma.setting.findUnique({ where: { key: "serviceMenuSeeded" } });
+  if (flag?.value === "1") return;
+  let index = 0;
+  for (const product of products) {
+    if (!SERVICE_PRODUCT_SLUGS.includes(product.slug)) continue;
+    const categoryId = categoryIds.get(product.category);
+    if (!categoryId) continue;
+    await prisma.product.upsert({
+      where: { slug: product.slug },
+      update: {},
+      create: {
+        slug: product.slug,
+        name: product.name,
+        description: product.description,
+        priceCents: product.priceCents,
+        categoryId,
+        image: product.image,
+        vegetarian: product.vegetarian ?? false,
+        vegan: product.vegan ?? false,
+        spicy: product.spicy ?? false,
+        halal: product.halal ?? false,
+        isNew: product.isNew ?? false,
+        sortOrder: 100 + index,
+      },
+    });
+    index += 1;
+  }
+  await prisma.setting.upsert({
+    where: { key: "serviceMenuSeeded" },
+    update: { value: "1" },
+    create: { key: "serviceMenuSeeded", value: "1" },
+  });
+}
+
+async function ensureDietFlags() {
+  const veganSlugs = [
+    "bowl-vegetarien",
+    "assiette-plantain-haricots",
+    "bissap-maison",
+    "gingembre-tonique",
+    "eau-minerale",
+    "degue-mangue",
+    "the-citronne",
+    "muceli-vegetal",
+  ];
+  await prisma.product.updateMany({
+    where: { slug: { in: veganSlugs } },
+    data: { vegan: true },
+  });
+}
+
 async function main() {
   await ensureInitialAdmin();
   await ensureSettings();
   await ensureTables();
-  await seedCatalog();
+  const categoryIds = await ensureCategorySchedules();
+  await seedCatalog(categoryIds);
+  await seedServiceCatalog(categoryIds);
+  await ensureDietFlags();
   console.log("Seed terminé.");
 }
 

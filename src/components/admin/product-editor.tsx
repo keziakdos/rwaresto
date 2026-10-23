@@ -20,6 +20,7 @@ export function centsToPrice(cents: number): string {
 
 const BADGE_FIELDS = [
   { key: "vegetarian", label: "Végétarien" },
+  { key: "vegan", label: "Végétalien" },
   { key: "spicy", label: "Épicé" },
   { key: "halal", label: "Halal" },
   { key: "isNew", label: "Nouveau" },
@@ -53,6 +54,7 @@ export function ProductEditor({
   );
   const [badges, setBadges] = useState({
     vegetarian: product?.vegetarian || false,
+    vegan: product?.vegan || false,
     spicy: product?.spicy || false,
     halal: product?.halal || false,
     isNew: product?.isNew || false,

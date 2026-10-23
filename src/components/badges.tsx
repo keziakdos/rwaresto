@@ -2,6 +2,7 @@ import { BADGES } from "@/lib/constants";
 
 export type ProductBadgeFlags = {
   vegetarian: boolean;
+  vegan: boolean;
   spicy: boolean;
   halal: boolean;
   isNew: boolean;
@@ -15,7 +16,7 @@ export function ProductBadges({
   limit?: number;
 }) {
   const entries = (Object.keys(BADGES) as (keyof typeof BADGES)[])
-    .filter((key) => badges[key])
+    .filter((key) => badges[key] && !(key === "vegetarian" && badges.vegan))
     .slice(0, limit);
   return (
     <div className="flex flex-wrap gap-1">

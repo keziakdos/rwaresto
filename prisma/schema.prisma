@@ -39,14 +39,17 @@ model DiningTable {
 }
 
 model Category {
-  id        String    @id @default(cuid())
-  name      String
-  slug      String    @unique
-  sortOrder Int       @default(0)
-  active    Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  products  Product[]
+  id            String    @id @default(cuid())
+  name          String
+  slug          String    @unique
+  image         String?
+  availableFrom String?
+  availableTo   String?
+  sortOrder     Int       @default(0)
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  products      Product[]
 
   @@index([active, sortOrder])
 }
@@ -63,6 +66,7 @@ model Product {
   hidden      Boolean  @default(false)
   archived    Boolean  @default(false)
   vegetarian  Boolean  @default(false)
+  vegan       Boolean  @default(false)
   spicy       Boolean  @default(false)
   halal       Boolean  @default(false)
   isNew       Boolean  @default(false)

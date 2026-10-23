@@ -54,6 +54,7 @@ export const MODE_LABELS = {
 
 export const BADGES = {
   vegetarian: { label: "Végétarien", short: "Végé", className: "bg-emerald-50 text-emerald-800" },
+  vegan: { label: "Végétalien", short: "Végan", className: "bg-lime-50 text-lime-800" },
   spicy: { label: "Épicé", short: "Épicé", className: "bg-orange-50 text-orange-800" },
   halal: { label: "Halal", short: "Halal", className: "bg-teal-50 text-teal-800" },
   isNew: { label: "Nouveau", short: "Nouveau", className: "bg-rose-50 text-rose-800" },

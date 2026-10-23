@@ -1,10 +1,13 @@
 import { prisma } from "@/lib/db";
 import { json, handleApiError } from "@/lib/api";
+import { getOpenState, getSettings, isWithinWindow } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
+    const settings = await getSettings();
+    const openState = getOpenState(settings);
     const categories = await prisma.category.findMany({
       where: { active: true },
       orderBy: { sortOrder: "asc" },
@@ -31,11 +34,40 @@ export async function GET() {
       },
     });
 
+    const scheduled = openState.isOpen
+      ? categories.filter((category) =>
+          isWithinWindow(category.availableFrom, category.availableTo),
+        )
+      : categories;
+    const visible = scheduled.length ? scheduled : categories;
+    const breakfast = openState.isOpen && visible.some((category) => category.slug === "petit-dejeuner");
+    const service = !openState.isOpen
+      ? {
+          mode: "closed" as const,
+          label: "Commandes fermées",
+          note: settings.hoursText,
+        }
+      : breakfast
+        ? {
+            mode: "breakfast" as const,
+            label: "Petit-déjeuner",
+            note: "Servi de 9h à 11h · la carte complète arrive à 11h.",
+          }
+        : {
+            mode: "full" as const,
+            label: "Carte complète",
+            note: "La cuisine vous accueille jusqu'à 01h00.",
+          };
+
     return json({
-      categories: categories.map((category) => ({
+      service,
+      categories: visible.map((category) => ({
         id: category.id,
         name: category.name,
         slug: category.slug,
+        image: category.image,
+        availableFrom: category.availableFrom,
+        availableTo: category.availableTo,
         products: category.products.map((product) => ({
           id: product.id,
           slug: product.slug,
@@ -46,6 +78,7 @@ export async function GET() {
           available: product.available,
           badges: {
             vegetarian: product.vegetarian,
+            vegan: product.vegan,
             spicy: product.spicy,
             halal: product.halal,
             isNew: product.isNew,

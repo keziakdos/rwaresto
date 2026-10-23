@@ -23,6 +23,7 @@ const schema = z.object({
   available: z.boolean().optional(),
   hidden: z.boolean().optional(),
   vegetarian: z.boolean().optional(),
+  vegan: z.boolean().optional(),
   spicy: z.boolean().optional(),
   halal: z.boolean().optional(),
   isNew: z.boolean().optional(),

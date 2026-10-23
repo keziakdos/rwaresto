@@ -10,13 +10,13 @@ export const DEFAULT_SETTINGS: SettingsMap = {
   logoUrl: "",
   primaryColor: "#C4512C",
   accentColor: "#234D3C",
-  openTime: "11:00",
-  closeTime: "22:00",
+  openTime: "09:00",
+  closeTime: "01:00",
   closedDays: "",
   manualOpen: "true",
   address: "12 place des Saveurs",
   phone: "",
-  hoursText: "Tous les jours · 11h00 – 22h00",
+  hoursText: "Tous les jours · 09h00 – 01h00",
 };
 
 export async function getSettings(): Promise<SettingsMap> {
@@ -29,7 +29,7 @@ export async function getSettings(): Promise<SettingsMap> {
   }
 }
 
-function parisParts(date = new Date()) {
+export function parisParts(date = new Date()) {
   const parts = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Europe/Paris",
     weekday: "short",
@@ -50,13 +50,42 @@ const WEEKDAY_INDEX: Record<string, number> = {
   Sat: 6,
 };
 
-function toMinutes(value: string): number | null {
+export function toMinutes(value: string): number | null {
   const match = /^(\d{1,2}):(\d{2})$/.exec(value);
   if (!match) return null;
   const hours = Number(match[1]);
   const minutes = Number(match[2]);
   if (hours > 23 || minutes > 59) return null;
   return hours * 60 + minutes;
+}
+
+export function isWithinWindow(
+  from: string | null | undefined,
+  to: string | null | undefined,
+  date = new Date(),
+): boolean {
+  if (!from && !to) return true;
+  const start = from ? toMinutes(from) : null;
+  const end = to ? toMinutes(to) : null;
+  if (start === null && end === null) return true;
+  const parts = parisParts(date);
+  const now = Number(parts.hour) * 60 + Number(parts.minute);
+  if (start !== null && end !== null) {
+    return end >= start ? now >= start && now < end : now >= start || now < end;
+  }
+  if (start !== null) return now >= start;
+  if (end !== null) return now < end;
+  return true;
+}
+
+export function serviceWeekday(open: number | null, close: number | null, date = new Date()): number {
+  const parts = parisParts(date);
+  let weekday = WEEKDAY_INDEX[parts.weekday] ?? 0;
+  const now = Number(parts.hour) * 60 + Number(parts.minute);
+  if (open !== null && close !== null && close < open && now < close) {
+    weekday = (weekday + 6) % 7;
+  }
+  return weekday;
 }
 
 export function getOpenState(settings: SettingsMap, date = new Date()) {
@@ -68,7 +97,9 @@ export function getOpenState(settings: SettingsMap, date = new Date()) {
   }
 
   const parts = parisParts(date);
-  const weekday = WEEKDAY_INDEX[parts.weekday] ?? 0;
+  const open = toMinutes(settings.openTime);
+  const close = toMinutes(settings.closeTime);
+  const weekday = serviceWeekday(open, close, date);
   const closedDays = settings.closedDays
     .split(",")
     .map((day) => Number(day.trim()))
@@ -81,8 +112,6 @@ export function getOpenState(settings: SettingsMap, date = new Date()) {
   }
 
   const now = Number(parts.hour) * 60 + Number(parts.minute);
-  const open = toMinutes(settings.openTime);
-  const close = toMinutes(settings.closeTime);
   if (open === null || close === null) {
     return { isOpen: true, reason: "" };
   }

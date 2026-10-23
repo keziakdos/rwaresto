@@ -9,7 +9,7 @@ import {
   json,
   readJson,
 } from "@/lib/api";
-import { getSettings, getOpenState } from "@/lib/settings";
+import { getSettings, getOpenState, isWithinWindow } from "@/lib/settings";
 import { calculateOrderTotals, type PricingProduct } from "@/lib/pricing";
 import { normalizeName } from "@/lib/normalize";
 import { ACTIVE_STATUSES } from "@/lib/constants";
@@ -125,6 +125,7 @@ export async function POST(request: NextRequest) {
     const products = await prisma.product.findMany({
       where: { id: { in: productIds } },
       include: {
+        category: true,
         optionGroups: {
           include: {
             optionGroup: { include: { choices: true } },
@@ -132,6 +133,20 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+
+    const unavailableAtThisTime = products.find(
+      (product) =>
+        !isWithinWindow(product.category.availableFrom, product.category.availableTo),
+    );
+    if (unavailableAtThisTime) {
+      return json(
+        {
+          error: `« ${unavailableAtThisTime.name} » n'est pas disponible à cette heure. Le petit-déjeuner est servi de 9h à 11h, la carte complète à partir de 11h.`,
+          code: "OUTSIDE_SERVICE",
+        },
+        409,
+      );
+    }
 
     const pricingProducts: PricingProduct[] = products.map((product) => ({
       id: product.id,
