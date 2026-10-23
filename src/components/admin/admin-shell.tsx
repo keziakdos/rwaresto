@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowUpRight,
   ClipboardList,
+  KeyRound,
   LayoutDashboard,
   LogOut,
   QrCode,
@@ -124,6 +125,14 @@ export function AdminShell({
           </div>
 
           <Link
+            href="/admin/change-password"
+            className="mt-2 flex items-center justify-center gap-1.5 rounded-xl border border-white/10 py-2.5 text-[10px] font-bold text-white/50 transition hover:bg-white/5 hover:text-white"
+          >
+            <KeyRound className="h-3.5 w-3.5" />
+            Changer mon mot de passe
+          </Link>
+
+          <Link
             href="/"
             className="mt-2 flex items-center justify-center gap-1.5 rounded-xl border border-white/10 py-2.5 text-[10px] font-bold text-white/50 transition hover:bg-white/5 hover:text-white"
           >
@@ -150,6 +159,14 @@ export function AdminShell({
                 {user.displayName}
               </span>
               <ThemeToggle />
+              <Link
+                href="/admin/change-password"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-muted transition hover:text-forest"
+                aria-label="Changer mon mot de passe"
+                title="Changer mon mot de passe"
+              >
+                <KeyRound className="h-4 w-4" />
+              </Link>
               <button
                 type="button"
                 onClick={logout}

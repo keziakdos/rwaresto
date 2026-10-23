@@ -76,7 +76,7 @@ docker compose logs -f app
 
 L'application écoute uniquement sur `127.0.0.1:${HOST_PORT}`. Les migrations et le seed idempotent sont exécutés au démarrage. Les données (SQLite + photos) sont conservées dans le volume `rwaresto_data`.
 
-Le reverse proxy n'est pas embarqué : le nginx de l'hôte expose le site en HTTPS. Voir [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md).
+Le reverse proxy n'est pas embarqué : le nginx de l'hôte expose le site en HTTPS. Voir [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md) et [docs/EXPLOITATION.md](docs/EXPLOITATION.md).
 
 ## Sauvegarde et restauration
 

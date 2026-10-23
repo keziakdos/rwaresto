@@ -56,11 +56,11 @@ async function ensureSettings() {
     accentColor: "#234D3C",
     openTime: "09:00",
     closeTime: "01:00",
-    closedDays: "",
+    closedDays: "1",
     manualOpen: "true",
     address: "12 place des Saveurs",
     phone: "",
-    hoursText: "Tous les jours · 09h00 – 01h00",
+    hoursText: "Du mardi au dimanche · 09h00 – 01h00",
   };
 
   for (const [key, value] of Object.entries(defaults)) {
@@ -301,6 +301,63 @@ const products: SeedProduct[] = [
     vegetarian: true,
   },
   {
+    slug: "cafe-noir",
+    name: "Café noir",
+    description: "Café noir fraîchement infusé, servi chaud.",
+    priceCents: 250,
+    category: "petit-dejeuner",
+    image: "/images/drink.jpg",
+    vegetarian: true,
+    vegan: true,
+  },
+  {
+    slug: "cafe-au-lait",
+    name: "Café au lait",
+    description: "Café et lait chaud, dosage doux.",
+    priceCents: 300,
+    category: "petit-dejeuner",
+    image: "/images/drink.jpg",
+    vegetarian: true,
+  },
+  {
+    slug: "chocolat-chaud",
+    name: "Chocolat chaud",
+    description: "Chocolat noir fondu, lait chaud et touche de cannelle.",
+    priceCents: 350,
+    category: "petit-dejeuner",
+    image: "/images/drink.jpg",
+    vegetarian: true,
+  },
+  {
+    slug: "jus-orange",
+    name: "Jus d'orange pressé",
+    description: "Orange fraîche pressée à la commande.",
+    priceCents: 400,
+    category: "petit-dejeuner",
+    image: "/images/boisson-gingembre.webp",
+    vegetarian: true,
+    vegan: true,
+  },
+  {
+    slug: "bol-fruits",
+    name: "Bol de fruits frais",
+    description: "Fruits de saison, citron vert et menthe fraîche.",
+    priceCents: 450,
+    category: "petit-dejeuner",
+    image: "/images/dessert-degue.webp",
+    vegetarian: true,
+    vegan: true,
+  },
+  {
+    slug: "yaourt-granola",
+    name: "Yaourt, granola & miel",
+    description: "Yaourt nature, granola maison et filet de miel.",
+    priceCents: 450,
+    category: "petit-dejeuner",
+    image: "/images/dessert-degue.webp",
+    vegetarian: true,
+  },
+  {
     slug: "matoke-boeuf",
     name: "Matoke & Bœuf",
     description:
@@ -505,6 +562,12 @@ const SERVICE_PRODUCT_SLUGS = [
   "rituel-du-matin",
   "the-citronne",
   "cookie-maison",
+  "cafe-noir",
+  "cafe-au-lait",
+  "chocolat-chaud",
+  "jus-orange",
+  "bol-fruits",
+  "yaourt-granola",
   "matoke-boeuf",
   "ugali-grillades",
   "muceli-vegetal",
@@ -512,7 +575,7 @@ const SERVICE_PRODUCT_SLUGS = [
 
 async function seedServiceCatalog(categoryIds: Map<string, string>) {
   const flag = await prisma.setting.findUnique({ where: { key: "serviceMenuSeeded" } });
-  if (flag?.value === "1") return;
+  if (flag?.value === "2") return;
   let index = 0;
   for (const product of products) {
     if (!SERVICE_PRODUCT_SLUGS.includes(product.slug)) continue;
@@ -540,8 +603,8 @@ async function seedServiceCatalog(categoryIds: Map<string, string>) {
   }
   await prisma.setting.upsert({
     where: { key: "serviceMenuSeeded" },
-    update: { value: "1" },
-    create: { key: "serviceMenuSeeded", value: "1" },
+    update: { value: "2" },
+    create: { key: "serviceMenuSeeded", value: "2" },
   });
 }
 
@@ -553,6 +616,9 @@ async function ensureDietFlags() {
     "gingembre-tonique",
     "eau-minerale",
     "the-citronne",
+    "cafe-noir",
+    "jus-orange",
+    "bol-fruits",
     "muceli-vegetal",
   ];
   await prisma.product.updateMany({

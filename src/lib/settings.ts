@@ -12,11 +12,11 @@ export const DEFAULT_SETTINGS: SettingsMap = {
   accentColor: "#234D3C",
   openTime: "09:00",
   closeTime: "01:00",
-  closedDays: "",
+  closedDays: "1",
   manualOpen: "true",
   address: "12 place des Saveurs",
   phone: "",
-  hoursText: "Tous les jours · 09h00 – 01h00",
+  hoursText: "Du mardi au dimanche · 09h00 – 01h00",
 };
 
 export async function getSettings(): Promise<SettingsMap> {

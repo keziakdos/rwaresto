@@ -48,6 +48,7 @@ export async function PublicFooter() {
               <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/40">Accès rapide</p>
               <Link href="/menu" className="block text-white/75 transition hover:text-white">La carte</Link>
               <Link href="/#etapes" className="block text-white/75 transition hover:text-white">Comment commander</Link>
+              <Link href="/rgpd" className="block text-white/75 transition hover:text-white">Confidentialité & RGPD</Link>
               <Link href="/admin/login" className="block text-white/75 transition hover:text-white">Espace équipe</Link>
             </div>
           </div>

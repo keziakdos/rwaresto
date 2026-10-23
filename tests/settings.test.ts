@@ -25,6 +25,18 @@ describe("horaires de service", () => {
     expect(getOpenState(settings, new Date("2026-10-23T01:00:00Z")).isOpen).toBe(false);
   });
 
+  it("ferme le lundi mais garde le service du dimanche après minuit", () => {
+    const settings = {
+      openTime: "09:00",
+      closeTime: "01:00",
+      closedDays: "1",
+      manualOpen: "true",
+      hoursText: "Du mardi au dimanche · 09h00 – 01h00",
+    };
+    expect(getOpenState(settings, new Date("2026-10-26T10:30:00Z")).isOpen).toBe(false);
+    expect(getOpenState(settings, new Date("2026-10-25T23:30:00Z")).isOpen).toBe(true);
+  });
+
   it("applique le jour de fermeture au service de la veille après minuit", () => {
     const settings = {
       openTime: "09:00",
