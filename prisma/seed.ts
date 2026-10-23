@@ -552,7 +552,6 @@ async function ensureDietFlags() {
     "bissap-maison",
     "gingembre-tonique",
     "eau-minerale",
-    "degue-mangue",
     "the-citronne",
     "muceli-vegetal",
   ];
