@@ -171,6 +171,7 @@ log "Envoi de $ARCHIVE ($SIZE_MB Mo) vers Telegram…"
 caption="Sauvegarde Rwaresto $STAMP — $SIZE_MB Mo — base SQLite uniquement, sans images."
 if ! send_document "$ARCHIVE" "$caption"; then
   log "ERREUR : Telegram n'a pas confirmé la réception. La sauvegarde sera retentée."
+  send_text "Échec de l'envoi de la sauvegarde Rwaresto ($STAMP, $SIZE_MB Mo). La sauvegarde sera retentée." || true
   exit 1
 fi
 
