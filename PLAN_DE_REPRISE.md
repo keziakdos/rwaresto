@@ -24,11 +24,12 @@ Le site est en production sur `https://rwaresto.rwazap.com`, avec HTTPS, PWA, co
 - Script `verify-backup.sh` ajouté pour contrôler l'intégrité des archives sans toucher à la production.
 - Menus spéciaux datés ajoutés à l'administration : dates de début/fin, en plus des horaires de service.
 - Ajout/modification des plats, prix, photos, disponibilité, masquage et archivage vérifiés dans l'admin.
+- Restauration complète testée dans un conteneur temporaire avec la dernière archive Telegram : application démarrée, API config et menu répondues correctement, production non modifiée.
 - Documentation : `docs/EXPLOITATION.md`.
 
 ### En cours
 
-- Vérifier une restauration complète dans un environnement sûr.
+- Aucun blocage technique prioritaire. Attendre le prochain envoi automatique Telegram dans 10 jours.
 
 ### Décisions
 
@@ -50,9 +51,8 @@ Les journaux OpenCode montrent des erreurs `Cannot connect to API` entre 18:35 e
 
 ### Haute priorité
 
-1. Tester une restauration réelle dans un environnement sûr.
-2. Vérifier le prochain envoi Telegram automatique après 10 jours.
-3. Valider les procédures de sauvegarde et de restauration.
+1. Vérifier le prochain envoi Telegram automatique après 10 jours.
+2. Valider les procédures de sauvegarde et de restauration sur la durée.
 
 ### Priorité moyenne
 
