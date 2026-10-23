@@ -131,13 +131,13 @@ export function CategoriesPanel({
   return (
     <div>
       <div>
-        <h2 className="font-display text-lg font-bold text-forest">Catégories</h2>
-        <p className="text-xs text-stone-500">
+        <h2 className="font-display text-xl font-semibold text-ink">Catégories</h2>
+        <p className="mt-1 text-xs text-muted">
           Glissez-déposez pour réordonner. Une catégorie contenant des plats ne peut pas être supprimée.
         </p>
       </div>
 
-      <div className="mt-3 space-y-2">
+      <div className="mt-4 space-y-2">
         {categories.map((category) => (
           <div
             key={category.id}
@@ -145,11 +145,11 @@ export function CategoriesPanel({
             onDragStart={() => setDragId(category.id)}
             onDragOver={(event) => event.preventDefault()}
             onDrop={() => drop(category.id)}
-            className={`flex items-center gap-2 rounded-xl border bg-white p-2.5 shadow-sm transition ${
-              dragId === category.id ? "border-brand opacity-60" : "border-black/5"
+            className={`flex items-center gap-2 rounded-2xl border bg-surface p-3 shadow-sm transition ${
+              dragId === category.id ? "border-brand opacity-60" : "border-line/60"
             }`}
           >
-            <GripVertical className="h-4 w-4 shrink-0 cursor-grab text-stone-300" aria-hidden="true" />
+            <GripVertical className="h-4 w-4 shrink-0 cursor-grab text-muted/40" aria-hidden="true" />
             {editingId === category.id ? (
               <div className="flex min-w-0 flex-1 items-center gap-1.5">
                 <input
@@ -165,14 +165,14 @@ export function CategoriesPanel({
                 <button type="button" onClick={() => rename(category)} className="rounded bg-forest p-1.5 text-white" aria-label="Enregistrer">
                   <Check className="h-3.5 w-3.5" />
                 </button>
-                <button type="button" onClick={() => setEditingId(null)} className="rounded bg-stone-100 p-1.5 text-stone-500" aria-label="Annuler">
+                <button type="button" onClick={() => setEditingId(null)} className="rounded bg-sand p-1.5 text-muted" aria-label="Annuler">
                   <X className="h-3.5 w-3.5" />
                 </button>
               </div>
             ) : (
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-extrabold text-stone-800">{category.name}</p>
-                <p className="text-[10px] font-semibold text-stone-400">
+                <p className="truncate text-sm font-extrabold text-ink">{category.name}</p>
+                <p className="text-[10px] font-semibold text-muted">
                   {category._count.products} plat{category._count.products > 1 ? "s" : ""} ·{" "}
                   {category.active ? "visible" : "masquée"}
                 </p>
@@ -182,17 +182,17 @@ export function CategoriesPanel({
               type="button"
               onClick={() => toggleActive(category)}
               className={`rounded-full px-2.5 py-1 text-[10px] font-extrabold ${
-                category.active ? "bg-emerald-50 text-emerald-700" : "bg-stone-100 text-stone-400"
+                category.active ? "bg-emerald-50 text-emerald-700" : "bg-sand text-muted"
               }`}
               title={category.active ? "Masquer la catégorie" : "Afficher la catégorie"}
             >
               {category.active ? "Visible" : "Masquée"}
             </button>
             <div className="flex shrink-0 gap-0.5">
-              <button type="button" onClick={() => move(category, -1)} className="rounded p-1.5 text-stone-300 hover:bg-stone-100 hover:text-stone-600" aria-label="Monter">
+              <button type="button" onClick={() => move(category, -1)} className="rounded p-1.5 text-muted/40 hover:bg-sand hover:text-muted" aria-label="Monter">
                 <ArrowUp className="h-3.5 w-3.5" />
               </button>
-              <button type="button" onClick={() => move(category, 1)} className="rounded p-1.5 text-stone-300 hover:bg-stone-100 hover:text-stone-600" aria-label="Descendre">
+              <button type="button" onClick={() => move(category, 1)} className="rounded p-1.5 text-muted/40 hover:bg-sand hover:text-muted" aria-label="Descendre">
                 <ArrowDown className="h-3.5 w-3.5" />
               </button>
               <button
@@ -201,12 +201,12 @@ export function CategoriesPanel({
                   setEditingId(category.id);
                   setEditName(category.name);
                 }}
-                className="rounded p-1.5 text-stone-400 hover:bg-stone-100 hover:text-forest"
+                className="rounded p-1.5 text-muted hover:bg-sand hover:text-forest"
                 aria-label="Renommer"
               >
                 <Pencil className="h-3.5 w-3.5" />
               </button>
-              <button type="button" onClick={() => remove(category)} className="rounded p-1.5 text-stone-300 hover:bg-red-50 hover:text-red-600" aria-label="Supprimer">
+              <button type="button" onClick={() => remove(category)} className="rounded p-1.5 text-muted/40 hover:bg-red-50 hover:text-red-600" aria-label="Supprimer">
                 <Trash2 className="h-3.5 w-3.5" />
               </button>
             </div>
@@ -214,7 +214,7 @@ export function CategoriesPanel({
         ))}
       </div>
 
-      <form onSubmit={addCategory} className="mt-4 flex gap-2 rounded-xl border border-dashed border-stone-300 bg-white/60 p-2.5">
+      <form onSubmit={addCategory} className="mt-4 flex gap-2 rounded-2xl border border-dashed border-line bg-cream/50 p-2.5">
         <input
           value={newName}
           onChange={(event) => setNewName(event.target.value.slice(0, 50))}

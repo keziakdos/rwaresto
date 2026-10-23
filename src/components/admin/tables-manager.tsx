@@ -96,21 +96,26 @@ export function TablesManager() {
 
   return (
     <div>
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-widest text-brand">Salle</p>
-          <h1 className="font-display text-2xl font-bold text-forest sm:text-3xl">Tables & QR codes</h1>
-          <p className="mt-1 text-sm text-stone-500">
+          <p className="eyebrow flex items-center gap-2">
+            <span className="status-dot text-brand" />
+            Salle
+          </p>
+          <h1 className="mt-2 font-display text-3xl font-semibold leading-tight text-ink sm:text-4xl">
+            Tables & QR codes.
+          </h1>
+          <p className="mt-1.5 text-sm text-muted">
             Chaque QR code ouvre le menu avec le numéro de table déjà renseigné.
           </p>
         </div>
-        <Link href="/admin/tables/print" target="_blank" className="btn-primary min-h-10 px-4 text-xs">
+        <Link href="/admin/tables/print" target="_blank" className="btn-primary min-h-11 px-4 text-xs">
           <Printer className="h-4 w-4" />
           Planche A4 à imprimer
         </Link>
-      </div>
+      </header>
 
-      <form onSubmit={addTable} className="mt-4 flex flex-col gap-2 rounded-2xl border border-black/5 bg-white p-3 shadow-card sm:flex-row">
+      <form onSubmit={addTable} className="mt-5 flex flex-col gap-3 rounded-[1.4rem] border border-line/70 bg-surface p-4 shadow-card sm:flex-row sm:items-end">
         <div className="flex-1">
           <label htmlFor="new-table-number" className="admin-label">
             Numéro
@@ -145,7 +150,7 @@ export function TablesManager() {
       </form>
 
       {loading ? (
-        <div className="flex justify-center py-16 text-stone-400">
+        <div className="flex justify-center py-16 text-muted">
           <Loader2 className="h-6 w-6 animate-spin" />
         </div>
       ) : (
@@ -166,12 +171,12 @@ export function TablesManager() {
       )}
 
       {!loading && !tables.length ? (
-        <div className="mt-6 rounded-2xl border border-dashed border-stone-300 bg-white/50 py-14 text-center text-sm font-semibold text-stone-400">
+        <div className="mt-6 rounded-2xl border border-dashed border-line bg-surface/50 py-14 text-center text-sm font-semibold text-muted">
           Aucune table. Ajoutez votre première table ci-dessus.
         </div>
       ) : null}
 
-      <div className="mt-5 rounded-2xl bg-sky-50 p-4 text-xs leading-relaxed text-sky-900">
+      <div className="mt-5 rounded-[1.4rem] border border-sky-200/70 bg-sky-50 p-4 text-xs leading-relaxed text-sky-900">
         <p className="font-extrabold">Conseil impression</p>
         <p className="mt-1">
           Imprimez la planche A4 sur papier épais, découpez chaque QR code et placez-le sur la
@@ -238,13 +243,13 @@ function TableCard({
   }
 
   return (
-    <article className={`rounded-2xl border border-black/5 bg-white p-3 shadow-card ${table.active ? "" : "opacity-65"}`}>
+    <article className={`rounded-[1.4rem] border border-line/70 bg-surface p-3.5 shadow-card transition hover:shadow-soft ${table.active ? "" : "opacity-65"}`}>
       <div className="flex items-start gap-3">
         <a
           href={`/api/admin/tables/${table.id}/qr?format=png&inline=1`}
           target="_blank"
           rel="noreferrer"
-          className="group relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border border-stone-200 bg-white p-1"
+          className="group relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border border-line bg-surface p-1"
           title="Ouvrir le QR code"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -253,20 +258,20 @@ function TableCard({
             alt={`QR code de la table ${table.number}`}
             className="h-full w-full"
           />
-          <span className="absolute inset-0 hidden items-center justify-center bg-white/80 text-[10px] font-extrabold text-forest group-hover:flex">
+          <span className="absolute inset-0 hidden items-center justify-center bg-surface/80 text-[10px] font-extrabold text-forest group-hover:flex">
             <ExternalLink className="h-3.5 w-3.5" />
           </span>
         </a>
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-1">
-            <h2 className="font-display text-base font-bold text-forest">
+            <h2 className="font-display text-lg font-semibold text-ink">
               Table {table.number}
             </h2>
             <button
               type="button"
               onClick={toggleActive}
               className={`rounded-full px-2 py-1 text-[10px] font-extrabold ${
-                table.active ? "bg-emerald-50 text-emerald-700" : "bg-stone-100 text-stone-400"
+                table.active ? "bg-emerald-50 text-emerald-700" : "bg-sand text-muted"
               }`}
             >
               {table.active ? "Active" : "Désactivée"}
@@ -302,14 +307,14 @@ function TableCard({
             ) : null}
             <a
               href={`/api/admin/tables/${table.id}/qr?format=png`}
-              className="inline-flex items-center gap-1 rounded-lg bg-stone-100 px-2 py-1 text-[10px] font-bold text-stone-600 hover:bg-stone-200"
+              className="inline-flex items-center gap-1 rounded-lg bg-sand px-2 py-1 text-[10px] font-bold text-muted hover:bg-sand"
             >
               <Download className="h-3 w-3" />
               PNG
             </a>
             <a
               href={`/api/admin/tables/${table.id}/qr?format=svg`}
-              className="inline-flex items-center gap-1 rounded-lg bg-stone-100 px-2 py-1 text-[10px] font-bold text-stone-600 hover:bg-stone-200"
+              className="inline-flex items-center gap-1 rounded-lg bg-sand px-2 py-1 text-[10px] font-bold text-muted hover:bg-sand"
             >
               <Download className="h-3 w-3" />
               SVG
@@ -317,13 +322,13 @@ function TableCard({
             <button
               type="button"
               onClick={onRemove}
-              className="ml-auto rounded-lg p-1.5 text-stone-300 hover:bg-red-50 hover:text-red-600"
+              className="ml-auto rounded-lg p-1.5 text-muted/40 hover:bg-red-50 hover:text-red-600"
               aria-label={`Supprimer la table ${table.number}`}
             >
               <Trash2 className="h-3.5 w-3.5" />
             </button>
           </div>
-          <p className="mt-1 truncate text-[9px] text-stone-400">
+          <p className="mt-1 truncate text-[9px] text-muted">
             {origin}/?table={table.number}
           </p>
         </div>

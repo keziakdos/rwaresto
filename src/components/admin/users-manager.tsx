@@ -78,40 +78,45 @@ export function UsersManager({ currentUserId }: { currentUserId: string }) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-widest text-brand">Accès</p>
-          <h1 className="font-display text-2xl font-bold text-forest sm:text-3xl">Utilisateurs</h1>
-          <p className="mt-1 text-sm text-stone-500">
-            Admin : accès complet. Caisse : commandes, encaissement et impression uniquement.
+          <p className="eyebrow flex items-center gap-2">
+            <span className="status-dot text-brand" />
+            Accès
+          </p>
+          <h1 className="mt-2 font-display text-3xl font-semibold leading-tight text-ink sm:text-4xl">
+            L&apos;équipe et les accès.
+          </h1>
+          <p className="mt-1.5 text-sm text-muted">
+            Admin : accès complet. Caisse : commandes et encaissement uniquement.
           </p>
         </div>
-        <button type="button" onClick={() => setEditing("new")} className="btn-primary min-h-10 px-4 text-xs">
+        <button type="button" onClick={() => setEditing("new")} className="btn-primary min-h-11 px-4 text-xs">
           <Plus className="h-4 w-4" />
           Ajouter un utilisateur
         </button>
-      </div>
+      </header>
 
-      <div className="mt-4 rounded-2xl bg-sky-50 p-3 text-xs leading-relaxed text-sky-900">
+      <div className="mt-5 rounded-[1.4rem] border border-sky-200/70 bg-sky-50 p-4 text-xs leading-relaxed text-sky-900">
         <strong className="font-extrabold">Sécurité :</strong> un mot de passe temporaire doit être
         changé à la première connexion. Les comptes désactivés sont déconnectés immédiatement. Le
         dernier administrateur actif ne peut être ni supprimé, ni rétrogradé.
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-16 text-stone-400">
+        <div className="flex justify-center py-16 text-muted">
           <Loader2 className="h-6 w-6 animate-spin" />
         </div>
       ) : (
-        <div className="mt-4 overflow-hidden rounded-2xl border border-black/5 bg-white shadow-card">
-          <div className="hidden grid-cols-[1.4fr_1fr_0.8fr_0.8fr_130px] gap-2 border-b border-black/5 bg-stone-50 px-4 py-2 text-[10px] font-extrabold uppercase tracking-wide text-stone-400 md:grid">
+        <div className="mt-4 overflow-hidden rounded-[1.4rem] border border-line/70 bg-surface shadow-card">
+          <div className="hidden grid-cols-[1.4fr_1fr_0.8fr_0.8fr_130px] gap-2 border-b border-line/60 bg-cream/50 px-4 py-2 text-[10px] font-extrabold uppercase tracking-wide text-muted md:grid">
             <span>Utilisateur</span>
             <span>Identifiant</span>
             <span>Rôle</span>
             <span>Statut</span>
             <span className="text-right">Actions</span>
           </div>
-          <div className="divide-y divide-black/5">
+          <div className="divide-y divide-line/60">
             {users.map((user) => (
               <div key={user.id} className="grid gap-2 px-4 py-3 md:grid-cols-[1.4fr_1fr_0.8fr_0.8fr_130px] md:items-center">
                 <div className="flex items-center gap-2.5">
@@ -122,13 +127,13 @@ export function UsersManager({ currentUserId }: { currentUserId: string }) {
                     <p className="truncate text-sm font-extrabold text-ink">
                       {user.displayName}
                       {user.id === currentUserId ? (
-                        <span className="ml-1.5 rounded-full bg-stone-100 px-1.5 py-0.5 text-[9px] font-bold text-stone-400">vous</span>
+                        <span className="ml-1.5 rounded-full bg-sand px-1.5 py-0.5 text-[9px] font-bold text-muted">vous</span>
                       ) : null}
                     </p>
-                    <p className="text-[10px] text-stone-400">Créé le {formatDateTime(user.createdAt)}</p>
+                    <p className="text-[10px] text-muted">Créé le {formatDateTime(user.createdAt)}</p>
                   </div>
                 </div>
-                <p className="text-xs font-bold text-stone-500">@{user.username}</p>
+                <p className="text-xs font-bold text-muted">@{user.username}</p>
                 <div>
                   <span className={`badge ${user.role === "admin" ? "bg-forest/10 text-forest" : "bg-sky-50 text-sky-700"}`}>
                     {user.role === "admin" ? <ShieldCheck className="mr-1 h-3 w-3" /> : null}
@@ -136,7 +141,7 @@ export function UsersManager({ currentUserId }: { currentUserId: string }) {
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-1">
-                  <span className={`badge ${user.active ? "bg-emerald-50 text-emerald-700" : "bg-stone-100 text-stone-400"}`}>
+                  <span className={`badge ${user.active ? "bg-emerald-50 text-emerald-700" : "bg-sand text-muted"}`}>
                     {user.active ? "Actif" : "Désactivé"}
                   </span>
                   {user.mustChangePassword ? (
@@ -147,7 +152,7 @@ export function UsersManager({ currentUserId }: { currentUserId: string }) {
                   <button
                     type="button"
                     onClick={() => setEditing(user)}
-                    className="rounded-lg p-2 text-stone-400 hover:bg-stone-100 hover:text-forest"
+                    className="rounded-lg p-2 text-muted hover:bg-sand hover:text-forest"
                     aria-label={`Modifier ${user.displayName}`}
                     title="Modifier / réinitialiser le mot de passe"
                   >
@@ -157,7 +162,7 @@ export function UsersManager({ currentUserId }: { currentUserId: string }) {
                     type="button"
                     onClick={() => toggle(user)}
                     disabled={user.id === currentUserId}
-                    className={`rounded-lg p-2 hover:bg-stone-100 disabled:opacity-25 ${
+                    className={`rounded-lg p-2 hover:bg-sand disabled:opacity-25 ${
                       user.active ? "text-amber-500" : "text-emerald-600"
                     }`}
                     aria-label={user.active ? "Désactiver" : "Activer"}
@@ -169,7 +174,7 @@ export function UsersManager({ currentUserId }: { currentUserId: string }) {
                     type="button"
                     onClick={() => remove(user)}
                     disabled={user.id === currentUserId}
-                    className="rounded-lg p-2 text-stone-300 hover:bg-red-50 hover:text-red-600 disabled:opacity-25"
+                    className="rounded-lg p-2 text-muted/40 hover:bg-red-50 hover:text-red-600 disabled:opacity-25"
                     aria-label={`Supprimer ${user.displayName}`}
                     title="Supprimer"
                   >
@@ -272,21 +277,21 @@ function UserEditor({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true">
-      <button type="button" onClick={onClose} className="absolute inset-0 bg-stone-950/50" aria-label="Fermer" />
+      <button type="button" onClick={onClose} className="absolute inset-0 bg-[#1a120c]/55" aria-label="Fermer" />
       <form
         onSubmit={submit}
-        className="relative w-full max-w-md rounded-t-3xl bg-white p-5 shadow-soft animate-slide-up sm:rounded-3xl"
+        className="relative w-full max-w-md rounded-t-3xl bg-surface p-5 shadow-soft animate-slide-up sm:rounded-3xl"
       >
         <div className="flex items-start justify-between">
           <div>
             <h2 className="font-display text-xl font-bold text-forest">
               {user ? "Modifier l'utilisateur" : "Nouvel utilisateur"}
             </h2>
-            <p className="text-xs text-stone-400">
+            <p className="text-xs text-muted">
               {user ? "Réinitialisez le mot de passe si nécessaire." : "Un mot de passe temporaire sera demandé."}
             </p>
           </div>
-          <button type="button" onClick={onClose} className="rounded-full p-2 text-stone-400 hover:bg-stone-100" aria-label="Fermer">
+          <button type="button" onClick={onClose} className="rounded-full p-2 text-muted hover:bg-sand" aria-label="Fermer">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -307,7 +312,7 @@ function UserEditor({
               />
             </div>
           ) : (
-            <p className="rounded-xl bg-stone-50 px-3 py-2 text-xs font-bold text-stone-500">
+            <p className="rounded-xl bg-cream/50 px-3 py-2 text-xs font-bold text-muted">
               Identifiant : @{user.username}
             </p>
           )}
@@ -355,14 +360,14 @@ function UserEditor({
               <button
                 type="button"
                 onClick={() => setShowPassword((value) => !value)}
-                className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100"
+                className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-muted hover:bg-sand"
                 aria-label={showPassword ? "Masquer" : "Afficher"}
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
             {user ? (
-              <p className="mt-1 flex items-center gap-1 text-[10px] text-stone-400">
+              <p className="mt-1 flex items-center gap-1 text-[10px] text-muted">
                 <KeyRound className="h-3 w-3" />
                 Le compte devra choisir un nouveau mot de passe à la prochaine connexion.
               </p>

@@ -166,21 +166,21 @@ export function ProductEditor({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true">
-      <button type="button" onClick={requestClose} className="absolute inset-0 bg-stone-950/50 backdrop-blur-[2px]" aria-label="Fermer" />
+      <button type="button" onClick={requestClose} className="absolute inset-0 bg-[#1a120c]/55 backdrop-blur-[2px]" aria-label="Fermer" />
       <form
         onSubmit={submit}
-        className="relative flex max-h-[95dvh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl bg-white shadow-soft animate-slide-up sm:rounded-3xl"
+        className="relative flex max-h-[95dvh] w-full max-w-2xl flex-col overflow-hidden rounded-t-[1.8rem] border border-line/70 bg-surface shadow-lift animate-slide-up sm:rounded-[1.8rem]"
       >
-        <div className="flex items-center justify-between border-b border-black/5 px-4 py-3.5">
+        <div className="flex items-center justify-between border-b border-line/60 px-4 py-3.5">
           <div>
-            <h2 className="font-display text-xl font-bold text-forest">
+            <h2 className="font-display text-xl font-semibold text-ink">
               {product ? "Modifier le plat" : "Nouveau plat"}
             </h2>
-            <p className="text-[11px] font-semibold text-stone-400">
+            <p className="text-[11px] font-semibold text-muted">
               Photo recadrée au centre et convertie automatiquement en WebP.
             </p>
           </div>
-          <button type="button" onClick={requestClose} className="rounded-full p-2 text-stone-400 hover:bg-stone-100" aria-label="Fermer">
+          <button type="button" onClick={requestClose} className="rounded-full p-2 text-muted hover:bg-sand" aria-label="Fermer">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -189,11 +189,11 @@ export function ProductEditor({
           <div className="grid gap-4 sm:grid-cols-[190px_1fr]">
             <div>
               <p className="admin-label">Photo</p>
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-dashed border-stone-300 bg-stone-50">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-dashed border-line bg-cream/50">
                 {displayImage ? (
                   <Image src={displayImage} alt="Aperçu du plat" fill unoptimized className="object-cover" />
                 ) : (
-                  <div className="flex h-full flex-col items-center justify-center text-stone-300">
+                  <div className="flex h-full flex-col items-center justify-center text-muted/40">
                     <ImagePlus className="h-8 w-8" />
                     <p className="mt-1 text-[11px] font-bold">Aucune photo</p>
                   </div>
@@ -218,7 +218,7 @@ export function ProductEditor({
                   Retirer
                 </button>
               </div>
-              <p className="mt-1.5 text-[10px] leading-snug text-stone-400">
+              <p className="mt-1.5 text-[10px] leading-snug text-muted">
                 JPG, PNG, WebP ou HEIC. 8 Mo max. Aperçu avant enregistrement.
               </p>
             </div>
@@ -280,7 +280,7 @@ export function ProductEditor({
             </div>
           </div>
 
-          <div className="mt-5 border-t border-black/5 pt-4">
+          <div className="mt-5 border-t border-line/60 pt-4">
             <p className="admin-label">Badges</p>
             <div className="flex flex-wrap gap-1.5">
               {BADGE_FIELDS.map((badge) => (
@@ -291,7 +291,7 @@ export function ProductEditor({
                   className={`rounded-full border px-3 py-1.5 text-xs font-extrabold transition ${
                     badges[badge.key]
                       ? "border-brand bg-brand-soft text-brand-dark"
-                      : "border-stone-200 bg-white text-stone-400"
+                      : "border-line bg-surface text-muted"
                   }`}
                   aria-pressed={badges[badge.key]}
                 >
@@ -302,10 +302,10 @@ export function ProductEditor({
           </div>
 
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
-            <label className="flex cursor-pointer items-center justify-between rounded-xl border border-stone-200 p-3">
+            <label className="flex cursor-pointer items-center justify-between rounded-xl border border-line p-3">
               <span>
-                <span className="block text-xs font-extrabold text-stone-700">Disponible</span>
-                <span className="text-[10px] text-stone-400">Commandable par les clients</span>
+                <span className="block text-xs font-extrabold text-ink">Disponible</span>
+                <span className="text-[10px] text-muted">Commandable par les clients</span>
               </span>
               <input
                 type="checkbox"
@@ -314,10 +314,10 @@ export function ProductEditor({
                 className="h-5 w-5 accent-[var(--color-brand)]"
               />
             </label>
-            <label className="flex cursor-pointer items-center justify-between rounded-xl border border-stone-200 p-3">
+            <label className="flex cursor-pointer items-center justify-between rounded-xl border border-line p-3">
               <span>
-                <span className="block text-xs font-extrabold text-stone-700">Masqué du menu</span>
-                <span className="text-[10px] text-stone-400">Visible seulement dans l'admin</span>
+                <span className="block text-xs font-extrabold text-ink">Masqué du menu</span>
+                <span className="text-[10px] text-muted">Visible seulement dans l'admin</span>
               </span>
               <input
                 type="checkbox"
@@ -328,12 +328,12 @@ export function ProductEditor({
             </label>
           </div>
 
-          <div className="mt-4 rounded-xl border border-stone-200 p-3">
+          <div className="mt-4 rounded-xl border border-line p-3">
             <p className="admin-label">Groupes d'options proposés</p>
             {optionGroups.length ? (
               <div className="grid gap-1.5 sm:grid-cols-2">
                 {optionGroups.map((group) => (
-                  <label key={group.id} className="flex cursor-pointer items-start gap-2 rounded-lg px-1 py-1.5 hover:bg-stone-50">
+                  <label key={group.id} className="flex cursor-pointer items-start gap-2 rounded-lg px-1 py-1.5 hover:bg-sand/60">
                     <input
                       type="checkbox"
                       checked={optionGroupIds.includes(group.id)}
@@ -347,8 +347,8 @@ export function ProductEditor({
                       className="mt-0.5 h-4 w-4 accent-[var(--color-brand)]"
                     />
                     <span className="min-w-0">
-                      <span className="block text-xs font-extrabold text-stone-700">{group.name}</span>
-                      <span className="text-[10px] text-stone-400">
+                      <span className="block text-xs font-extrabold text-ink">{group.name}</span>
+                      <span className="text-[10px] text-muted">
                         {group.type === "single" ? "Choix unique" : "Choix multiple"}
                         {group.required ? " · obligatoire" : ""} · {group.choices.length} choix
                       </span>
@@ -357,7 +357,7 @@ export function ProductEditor({
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-stone-400">
+              <p className="text-xs text-muted">
                 Créez d'abord des groupes dans l'onglet « Options ».
               </p>
             )}
@@ -370,7 +370,7 @@ export function ProductEditor({
           ) : null}
         </div>
 
-        <div className="flex gap-2 border-t border-black/5 bg-white px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
+        <div className="flex gap-2 border-t border-line/60 bg-surface px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
           <button type="button" onClick={requestClose} disabled={saving} className="btn-secondary flex-1">
             Annuler
           </button>

@@ -140,7 +140,7 @@ export function SettingsManager() {
 
   if (loading && !settings) {
     return (
-      <div className="flex justify-center py-24 text-stone-400">
+      <div className="flex justify-center py-24 text-muted">
         <Loader2 className="h-6 w-6 animate-spin" />
       </div>
     );
@@ -148,8 +148,8 @@ export function SettingsManager() {
 
   if (!settings) {
     return (
-      <div className="rounded-2xl bg-white p-8 text-center">
-        <p className="text-sm font-bold text-stone-500">{error}</p>
+      <div className="rounded-2xl bg-surface p-8 text-center">
+        <p className="text-sm font-bold text-muted">{error}</p>
         <button type="button" onClick={load} className="btn-primary mt-4">
           Réessayer
         </button>
@@ -162,22 +162,27 @@ export function SettingsManager() {
   const isManuallyOpen = settings.manualOpen !== "false";
 
   return (
-    <div className="pb-24">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <div className="pb-32 lg:pb-24">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-widest text-brand">Configuration</p>
-          <h1 className="font-display text-2xl font-bold text-forest sm:text-3xl">Paramètres</h1>
-          <p className="mt-1 text-sm text-stone-500">Identité, horaires et ouverture du restaurant.</p>
+          <p className="eyebrow flex items-center gap-2">
+            <Store className="h-3.5 w-3.5" />
+            Configuration
+          </p>
+          <h1 className="mt-2 font-display text-3xl font-semibold leading-tight text-ink sm:text-4xl">
+            Les réglages du restaurant.
+          </h1>
+          <p className="mt-1.5 text-sm text-muted">Identité, horaires et ouverture du restaurant.</p>
         </div>
-        <Link href="/" target="_blank" className="btn-secondary min-h-10 px-3 text-xs">
+        <Link href="/" target="_blank" className="btn-secondary min-h-11 px-3.5 text-xs">
           <ExternalLink className="h-4 w-4" />
           Voir le site
         </Link>
-      </div>
+      </header>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <section className="rounded-2xl border border-black/5 bg-white p-4 shadow-card">
-          <h2 className="font-display text-lg font-bold text-forest">Identité</h2>
+      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+        <section className="rounded-[1.4rem] border border-line/70 bg-surface p-4 shadow-card sm:p-5">
+          <h2 className="font-display text-xl font-semibold text-ink">Identité</h2>
           <div className="mt-3 space-y-3">
             <div>
               <label htmlFor="restaurant-name" className="admin-label">
@@ -216,7 +221,7 @@ export function SettingsManager() {
             <div>
               <p className="admin-label">Logo</p>
               <div className="flex items-center gap-3">
-                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-stone-100">
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-sand">
                   {logo ? (
                     <Image src={logo} alt="Logo" fill unoptimized className="object-cover" />
                   ) : (
@@ -251,7 +256,7 @@ export function SettingsManager() {
                       Retirer le logo personnalisé
                     </button>
                   ) : null}
-                  <p className="mt-1 text-[10px] text-stone-400">Carré, converti en WebP.</p>
+                  <p className="mt-1 text-[10px] text-muted">Carré, converti en WebP.</p>
                 </div>
               </div>
             </div>
@@ -265,7 +270,7 @@ export function SettingsManager() {
                     type="color"
                     value={settings.primaryColor}
                     onChange={(event) => set("primaryColor", event.target.value)}
-                    className="h-10 w-12 cursor-pointer rounded-lg border border-stone-200 bg-white p-1"
+                    className="h-10 w-12 cursor-pointer rounded-lg border border-line bg-surface p-1"
                     aria-label="Couleur principale"
                   />
                   <input
@@ -285,7 +290,7 @@ export function SettingsManager() {
                     type="color"
                     value={settings.accentColor}
                     onChange={(event) => set("accentColor", event.target.value)}
-                    className="h-10 w-12 cursor-pointer rounded-lg border border-stone-200 bg-white p-1"
+                    className="h-10 w-12 cursor-pointer rounded-lg border border-line bg-surface p-1"
                     aria-label="Couleur secondaire"
                   />
                   <input
@@ -308,28 +313,28 @@ export function SettingsManager() {
                 className="field w-28 uppercase"
                 maxLength={3}
               />
-              <p className="mt-1 text-[10px] text-stone-400">EUR, USD, XOF, MAD…</p>
+              <p className="mt-1 text-[10px] text-muted">EUR, USD, XOF, MAD…</p>
             </div>
           </div>
         </section>
 
         <div className="space-y-4">
-          <section className="rounded-2xl border border-black/5 bg-white p-4 shadow-card">
+          <section className="rounded-[1.4rem] border border-line/70 bg-surface p-4 shadow-card sm:p-5">
             <div className="flex items-center justify-between gap-2">
-              <h2 className="font-display text-lg font-bold text-forest">Ouverture</h2>
+              <h2 className="font-display text-xl font-semibold text-ink">Ouverture</h2>
               <span
                 className={`badge ${isManuallyOpen ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`}
               >
                 {isManuallyOpen ? "Ouvert manuellement" : "Fermé manuellement"}
               </span>
             </div>
-            <label className="mt-3 flex cursor-pointer items-center justify-between rounded-xl border border-stone-200 p-3">
+            <label className="mt-3 flex cursor-pointer items-center justify-between rounded-xl border border-line p-3">
               <span>
-                <span className="flex items-center gap-1.5 text-sm font-extrabold text-stone-800">
+                <span className="flex items-center gap-1.5 text-sm font-extrabold text-ink">
                   <Store className="h-4 w-4 text-forest" />
                   Accepter les commandes
                 </span>
-                <span className="text-[10px] text-stone-400">
+                <span className="text-[10px] text-muted">
                   Désactivez pour fermer immédiatement les commandes.
                 </span>
               </span>
@@ -377,7 +382,7 @@ export function SettingsManager() {
                     className={`rounded-full border px-3 py-1.5 text-xs font-extrabold ${
                       closedDays.includes(day.value)
                         ? "border-red-200 bg-red-50 text-red-700"
-                        : "border-stone-200 text-stone-400"
+                        : "border-line text-muted"
                     }`}
                     aria-pressed={closedDays.includes(day.value)}
                   >
@@ -385,7 +390,7 @@ export function SettingsManager() {
                   </button>
                 ))}
               </div>
-              <p className="mt-1 text-[10px] text-stone-400">Aucun jour sélectionné = ouvert tous les jours.</p>
+              <p className="mt-1 text-[10px] text-muted">Aucun jour sélectionné = ouvert tous les jours.</p>
             </div>
             <div className="mt-3">
               <label htmlFor="hours-text" className="admin-label">
@@ -401,8 +406,8 @@ export function SettingsManager() {
             </div>
           </section>
 
-          <section className="rounded-2xl border border-black/5 bg-white p-4 shadow-card">
-            <h2 className="font-display text-lg font-bold text-forest">Coordonnées</h2>
+          <section className="rounded-[1.4rem] border border-line/70 bg-surface p-4 shadow-card sm:p-5">
+            <h2 className="font-display text-xl font-semibold text-ink">Coordonnées</h2>
             <div className="mt-3 space-y-3">
               <div>
                 <label htmlFor="address" className="admin-label">
@@ -438,7 +443,7 @@ export function SettingsManager() {
         </p>
       ) : null}
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-black/5 bg-white/95 px-4 py-3 backdrop-blur lg:left-64">
+      <div className="fixed inset-x-0 bottom-[4.6rem] z-20 border-t border-line/70 bg-surface/95 px-4 py-3 backdrop-blur-xl lg:bottom-0 lg:left-72">
         <div className="mx-auto flex max-w-7xl items-center justify-end gap-2">
           <button type="button" onClick={cancel} disabled={saving} className="btn-secondary">
             <RotateCcw className="h-4 w-4" />
