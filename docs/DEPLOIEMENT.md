@@ -79,6 +79,19 @@ Attendre `healthy`, puis vérifier en local :
 curl -fsS http://127.0.0.1:3107/api/config
 ```
 
+## 3. Nginx et Certbot (script automatisé)
+
+Une fois l'application démarrée et saine, le script suivant installe uniquement le vhost `rwaresto.rwazap.com`, obtient le certificat avec Certbot, puis active HTTPS. Il vérifie les conflits et restaure la configuration précédente en cas d'échec.
+
+```bash
+cd /opt/rwaresto
+sudo bash scripts/setup-nginx.sh
+```
+
+Le script refuse de continuer si le nom est déjà déclaré ailleurs. `nginx -t` est exécuté avant chaque rechargement et `reload` est utilisé, jamais `restart`.
+
+Les étapes manuelles ci-dessous restent disponibles en cas de besoin.
+
 ## 3. Nginx HTTP temporaire pour Certbot
 
 S'assurer que le dossier ACME existe :
