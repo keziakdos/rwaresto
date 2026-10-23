@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-export PATH="/app/node_modules/.bin:$PATH"
+export PATH="/app/tools/node_modules/.bin:$PATH"
 
 if [ -z "${DATABASE_URL:-}" ]; then
   echo "ERREUR : DATABASE_URL est requis (ex. file:/data/rwaresto.db)." >&2
@@ -20,10 +20,10 @@ fi
 mkdir -p "${UPLOAD_DIR:-/data/uploads}"
 
 echo "Application des migrations Prisma…"
-./node_modules/.bin/prisma migrate deploy --schema prisma/schema.prisma
+prisma migrate deploy --schema prisma/schema.prisma
 
 echo "Vérification des données initiales (idempotent)…"
-./node_modules/.bin/prisma db seed --schema prisma/schema.prisma
+prisma db seed --schema prisma/schema.prisma
 
 echo "Démarrage du serveur Next.js…"
-exec ./node_modules/.bin/next start -H 0.0.0.0 -p 3000
+exec node server.js

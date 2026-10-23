@@ -19,6 +19,10 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 
+FROM node:22-bookworm-slim AS tools
+WORKDIR /tools
+RUN npm install --omit=dev --no-package-lock --no-save prisma@6.19.3 tsx@4.23.15
+
 FROM node:22-bookworm-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
@@ -28,14 +32,13 @@ ENV NODE_ENV=production \
 RUN apt-get update \
   && apt-get install -y --no-install-recommends openssl ca-certificates sqlite3 \
   && rm -rf /var/lib/apt/lists/*
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev && npm cache clean --force
-COPY --from=builder /app/prisma ./prisma
-RUN npx prisma generate
-COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.mjs ./next.config.mjs
-COPY --from=builder /app/tsconfig.json ./tsconfig.json
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules/bcryptjs ./node_modules/bcryptjs
+COPY --from=tools /tools/node_modules ./tools/node_modules
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh \
   && mkdir -p /data/uploads \
