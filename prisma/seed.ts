@@ -393,6 +393,117 @@ const products: SeedProduct[] = [
   },
 ];
 
+type ExpansionProduct = SeedProduct & { categorySlug: string };
+
+const EXPANSION_PRODUCTS: ExpansionProduct[] = [
+  {
+    slug: "poulet-braise-gingembre",
+    name: "Poulet braisé au gingembre",
+    description: "Poulet mariné au gingembre, riz parfumé et légumes sautés.",
+    priceCents: 1490,
+    category: "assiettes",
+    categorySlug: "assiettes",
+    image: "/images/assiette-poulet.webp",
+    halal: true,
+  },
+  {
+    slug: "poisson-entier-grille",
+    name: "Poisson entier grillé",
+    description: "Poisson entier braisé, sauce citron-gingembre et plantain doré.",
+    priceCents: 1690,
+    category: "assiettes",
+    categorySlug: "assiettes",
+    image: "/images/assiette-thieb.webp",
+    spicy: true,
+  },
+  {
+    slug: "brochettes-boeuf-marinees",
+    name: "Brochettes de bœuf marinées",
+    description: "Brochettes de bœuf marinées, sauce arachide et oignons grillés.",
+    priceCents: 1590,
+    category: "assiettes",
+    categorySlug: "assiettes",
+    image: "/images/ugali.jpg",
+    halal: true,
+    spicy: true,
+  },
+  {
+    slug: "riz-coco-legumes",
+    name: "Riz coco & légumes sautés",
+    description: "Riz au lait de coco, légumes sautés et herbes fraîches.",
+    priceCents: 1290,
+    category: "assiettes",
+    categorySlug: "assiettes",
+    image: "/images/muceli.jpg",
+    vegetarian: true,
+    vegan: true,
+  },
+  {
+    slug: "haricots-verts-palmiste",
+    name: "Haricots verts au palmiste",
+    description: "Haricots verts fondants au palmiste, tomates et épices douces.",
+    priceCents: 1190,
+    category: "assiettes",
+    categorySlug: "assiettes",
+    image: "/images/muceli.jpg",
+    vegetarian: true,
+    vegan: true,
+  },
+  {
+    slug: "plantain-frit-avocat",
+    name: "Plantain frit & avocat",
+    description: "Plantain frit, avocat frais et sauce tomate-gingembre.",
+    priceCents: 990,
+    category: "assiettes",
+    categorySlug: "assiettes",
+    image: "/images/assiette-plantain.webp",
+    vegetarian: true,
+    vegan: true,
+  },
+  {
+    slug: "samoussas-legumes",
+    name: "Samoussas aux légumes",
+    description: "Samoussas croustillants aux légumes, servis avec une sauce tamarin.",
+    priceCents: 650,
+    category: "assiettes",
+    categorySlug: "assiettes",
+    image: "/images/assiette-plantain.webp",
+    vegetarian: true,
+  },
+  {
+    slug: "beignets-banane",
+    name: "Beignets de banane",
+    description: "Beignets de banane moelleux, saupoudrés de sucre.",
+    priceCents: 550,
+    category: "desserts",
+    categorySlug: "desserts",
+    image: "/images/dessert-fondant.webp",
+    vegetarian: true,
+  },
+  {
+    slug: "salade-mangue-avocat",
+    name: "Salade mangue, avocat & arachides",
+    description: "Mangue fraîche, avocat, arachides concassées et citron vert.",
+    priceCents: 1090,
+    category: "assiettes",
+    categorySlug: "assiettes",
+    image: "/images/dessert-degue.webp",
+    vegetarian: true,
+    vegan: true,
+  },
+  {
+    slug: "jus-tamarin",
+    name: "Jus de tamarin",
+    description: "Jus de tamarin frais, légèrement acidulé.",
+    priceCents: 390,
+    category: "boissons",
+    categorySlug: "boissons",
+    image: "/images/boisson-bissap.webp",
+    vegetarian: true,
+    vegan: true,
+  },
+];
+
 async function ensureCategorySchedules(): Promise<Map<string, string>> {
   const categoryIds = new Map<string, string>();
   for (const category of categories) {
@@ -608,6 +719,40 @@ async function seedServiceCatalog(categoryIds: Map<string, string>) {
   });
 }
 
+async function seedMenuExpansion(categoryIds: Map<string, string>) {
+  const flag = await prisma.setting.findUnique({ where: { key: "menuExpansionSeeded" } });
+  if (flag?.value === "1") return;
+  let index = 0;
+  for (const product of EXPANSION_PRODUCTS) {
+    const categoryId = categoryIds.get(product.categorySlug);
+    if (!categoryId) continue;
+    await prisma.product.upsert({
+      where: { slug: product.slug },
+      update: {},
+      create: {
+        slug: product.slug,
+        name: product.name,
+        description: product.description,
+        priceCents: product.priceCents,
+        categoryId,
+        image: product.image,
+        vegetarian: product.vegetarian ?? false,
+        vegan: product.vegan ?? false,
+        spicy: product.spicy ?? false,
+        halal: product.halal ?? false,
+        isNew: product.isNew ?? false,
+        sortOrder: 200 + index,
+      },
+    });
+    index += 1;
+  }
+  await prisma.setting.upsert({
+    where: { key: "menuExpansionSeeded" },
+    update: { value: "1" },
+    create: { key: "menuExpansionSeeded", value: "1" },
+  });
+}
+
 async function ensureDietFlags() {
   const veganSlugs = [
     "bowl-vegetarien",
@@ -619,6 +764,11 @@ async function ensureDietFlags() {
     "cafe-noir",
     "jus-orange",
     "bol-fruits",
+    "riz-coco-legumes",
+    "haricots-verts-palmiste",
+    "plantain-frit-avocat",
+    "salade-mangue-avocat",
+    "jus-tamarin",
     "muceli-vegetal",
   ];
   await prisma.product.updateMany({
@@ -634,6 +784,7 @@ async function main() {
   const categoryIds = await ensureCategorySchedules();
   await seedCatalog(categoryIds);
   await seedServiceCatalog(categoryIds);
+  await seedMenuExpansion(categoryIds);
   await ensureDietFlags();
   console.log("Seed terminé.");
 }
