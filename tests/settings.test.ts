@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getOpenState, isWithinWindow } from "../src/lib/settings";
+import { getOpenState, isWithinDateRange, isWithinWindow } from "../src/lib/settings";
 
 describe("horaires de service", () => {
   it("gère une plage classique", () => {
@@ -10,6 +10,13 @@ describe("horaires de service", () => {
   it("gère une fermeture après minuit", () => {
     expect(isWithinWindow("11:00", "01:00", new Date("2026-10-23T22:30:00Z"))).toBe(true);
     expect(isWithinWindow("11:00", "01:00", new Date("2026-10-23T23:30:00Z"))).toBe(false);
+  });
+
+  it("gère une plage de dates pour un menu spécial", () => {
+    expect(isWithinDateRange("2026-02-13", "2026-02-14", new Date("2026-02-13T12:00:00Z"))).toBe(true);
+    expect(isWithinDateRange("2026-02-13", "2026-02-14", new Date("2026-02-15T12:00:00Z"))).toBe(false);
+    expect(isWithinDateRange("2026-02-13", "2026-02-14", new Date("2026-02-12T12:00:00Z"))).toBe(false);
+    expect(isWithinDateRange(null, null, new Date("2026-02-15T12:00:00Z"))).toBe(true);
   });
 
   it("ouvre de 9h à 1h du matin", () => {

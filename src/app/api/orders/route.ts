@@ -9,7 +9,7 @@ import {
   json,
   readJson,
 } from "@/lib/api";
-import { getSettings, getOpenState, isWithinWindow } from "@/lib/settings";
+import { getSettings, getOpenState, isWithinDateRange, isWithinWindow } from "@/lib/settings";
 import { calculateOrderTotals, type PricingProduct } from "@/lib/pricing";
 import { normalizeName } from "@/lib/normalize";
 import { ACTIVE_STATUSES } from "@/lib/constants";
@@ -136,6 +136,10 @@ export async function POST(request: NextRequest) {
 
     const unavailableAtThisTime = products.find(
       (product) =>
+        !isWithinDateRange(
+          product.category.availableFromDate,
+          product.category.availableToDate,
+        ) ||
         !isWithinWindow(product.category.availableFrom, product.category.availableTo),
     );
     if (unavailableAtThisTime) {

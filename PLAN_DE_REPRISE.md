@@ -22,6 +22,8 @@ Le site est en production sur `https://rwaresto.rwazap.com`, avec HTTPS, PWA, co
 - Premier envoi Telegram testé : archive de 22,9 Ko contenant uniquement `rwaresto-backup.db`, intégrité SQLite vérifiée.
 - Script de vérification HTTP de production ajouté et exécuté avec succès.
 - Script `verify-backup.sh` ajouté pour contrôler l'intégrité des archives sans toucher à la production.
+- Menus spéciaux datés ajoutés à l'administration : dates de début/fin, en plus des horaires de service.
+- Ajout/modification des plats, prix, photos, disponibilité, masquage et archivage vérifiés dans l'admin.
 - Documentation : `docs/EXPLOITATION.md`.
 
 ### En cours

@@ -28,6 +28,17 @@ import { useToast } from "./toast-provider";
 import { CardSkeleton } from "./ui/skeleton";
 import { EmptyState } from "./ui/empty-state";
 
+function dateRangeLabel(category: MenuCategory) {
+  if (!category.availableFromDate && !category.availableToDate) return "";
+  const format = (value: string) =>
+    new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "short" }).format(
+      new Date(`${value}T12:00:00`),
+    );
+  const from = category.availableFromDate ? format(category.availableFromDate) : "…";
+  const to = category.availableToDate ? format(category.availableToDate) : "…";
+  return `${from} → ${to}`;
+}
+
 function categoryIcon(name: string) {
   const value = name.toLowerCase();
   if (value.includes("boisson")) return CupSoda;
@@ -122,6 +133,8 @@ export function MenuExperience({
           image: "/images/muceli.jpg",
           availableFrom: null,
           availableTo: null,
+          availableFromDate: null,
+          availableToDate: null,
           products: veganProducts,
         }
       : null;
@@ -390,6 +403,11 @@ export function MenuExperience({
                         {category.availableFrom && category.availableTo ? (
                           <span className="rounded-full bg-sand px-2 py-0.5 text-[9px] font-extrabold text-muted">
                             {category.availableFrom.replace(":", "h")} – {category.availableTo.replace(":", "h")}
+                          </span>
+                        ) : null}
+                        {dateRangeLabel(category) ? (
+                          <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[9px] font-extrabold text-brand-dark">
+                            Menu spécial · {dateRangeLabel(category)}
                           </span>
                         ) : null}
                       </div>

@@ -16,12 +16,15 @@ import { publish } from "@/lib/realtime";
 export const dynamic = "force-dynamic";
 
 const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Heure invalide.");
+const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date invalide.");
 
 const schema = z.object({
   name: z.string().trim().min(2, "Nom de catégorie requis.").max(50),
   image: z.string().trim().max(500).nullable().optional(),
   availableFrom: timeSchema.nullable().optional(),
   availableTo: timeSchema.nullable().optional(),
+  availableFromDate: dateSchema.nullable().optional(),
+  availableToDate: dateSchema.nullable().optional(),
   active: z.boolean().optional(),
 });
 
@@ -52,6 +55,8 @@ export async function POST(request: NextRequest) {
         image: parsed.data.image || null,
         availableFrom: parsed.data.availableFrom || null,
         availableTo: parsed.data.availableTo || null,
+        availableFromDate: parsed.data.availableFromDate || null,
+        availableToDate: parsed.data.availableToDate || null,
         sortOrder: count,
         active: parsed.data.active ?? true,
       },

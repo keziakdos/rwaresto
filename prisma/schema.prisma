@@ -42,10 +42,12 @@ model Category {
   id            String    @id @default(cuid())
   name          String
   slug          String    @unique
-  image         String?
-  availableFrom String?
-  availableTo   String?
-  sortOrder     Int       @default(0)
+  image             String?
+  availableFrom     String?
+  availableTo       String?
+  availableFromDate String?
+  availableToDate   String?
+  sortOrder         Int       @default(0)
   active        Boolean   @default(true)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

@@ -40,6 +40,8 @@ export type MenuCategory = {
   image: string | null;
   availableFrom: string | null;
   availableTo: string | null;
+  availableFromDate: string | null;
+  availableToDate: string | null;
   products: MenuProduct[];
 };
 

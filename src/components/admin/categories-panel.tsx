@@ -5,6 +5,7 @@ import Image from "next/image";
 import {
   ArrowDown,
   ArrowUp,
+  CalendarDays,
   Clock3,
   GripVertical,
   ImagePlus,
@@ -23,6 +24,17 @@ function serviceLabel(category: AdminCategory) {
   const from = category.availableFrom?.replace(":", "h") || "…";
   const to = category.availableTo?.replace(":", "h") || "…";
   return `${from} – ${to}`;
+}
+
+function dateLabel(category: AdminCategory) {
+  if (!category.availableFromDate && !category.availableToDate) return "";
+  const format = (value: string) =>
+    new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "short", year: "numeric" }).format(
+      new Date(`${value}T12:00:00`),
+    );
+  const from = category.availableFromDate ? format(category.availableFromDate) : "…";
+  const to = category.availableToDate ? format(category.availableToDate) : "…";
+  return `${from} → ${to}`;
 }
 
 export function CategoriesPanel({
@@ -133,7 +145,7 @@ export function CategoriesPanel({
       <div>
         <h2 className="font-display text-xl font-semibold text-ink">Catégories & services</h2>
         <p className="mt-1 text-xs text-muted">
-          Photo, horaires de service et ordre d&apos;affichage. Le petit-déjeuner peut être réservé à 9h–11h, la carte complète à partir de 11h.
+          Photo, horaires de service et ordre d&apos;affichage. Le petit-déjeuner peut être réservé à 9h–11h, la carte complète à partir de 11h. Pour un menu spécial, renseignez aussi ses dates.
         </p>
       </div>
 
@@ -167,6 +179,12 @@ export function CategoriesPanel({
                   <Clock3 className="h-3 w-3" />
                   {serviceLabel(category)}
                 </span>
+                {dateLabel(category) ? (
+                  <span className="inline-flex items-center gap-1">
+                    <CalendarDays className="h-3 w-3" />
+                    {dateLabel(category)}
+                  </span>
+                ) : null}
                 <span>{category.active ? "visible" : "masquée"}</span>
               </p>
             </div>
@@ -247,6 +265,8 @@ function CategoryEditor({
   const [file, setFile] = useState<File | null>(null);
   const [from, setFrom] = useState(category.availableFrom || "");
   const [to, setTo] = useState(category.availableTo || "");
+  const [fromDate, setFromDate] = useState(category.availableFromDate || "");
+  const [toDate, setToDate] = useState(category.availableToDate || "");
   const [active, setActive] = useState(category.active);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -296,6 +316,10 @@ function CategoryEditor({
       setError("Indiquez aussi l'heure de début de service.");
       return;
     }
+    if (fromDate && toDate && fromDate > toDate) {
+      setError("La date de début doit précéder la date de fin.");
+      return;
+    }
     setSaving(true);
     setError("");
     try {
@@ -320,6 +344,8 @@ function CategoryEditor({
           image: imageUrl || null,
           availableFrom: from || null,
           availableTo: to || null,
+          availableFromDate: fromDate || null,
+          availableToDate: toDate || null,
           active,
         }),
       });
@@ -418,6 +444,25 @@ function CategoryEditor({
                 <p className="mt-1.5 text-[10px] leading-snug text-muted">
                   Exemple petit-déjeuner : 09:00–11:00. Carte complète : 11:00–01:00. Laissez vide pour toute la journée.
                 </p>
+              </div>
+              <div className="rounded-xl border border-line/70 p-3">
+                <p className="flex items-center gap-1.5 text-xs font-extrabold text-ink">
+                  <CalendarDays className="h-3.5 w-3.5 text-brand" />
+                  Menu spécial · dates
+                </p>
+                <p className="mt-0.5 text-[10px] text-muted">
+                  Facultatif. Exemple Saint-Valentin : du 13/02 au 14/02. Laissez vide pour un menu permanent.
+                </p>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <div>
+                    <label htmlFor={`category-from-date-${category.id}`} className="mb-1 block text-[10px] font-bold text-muted">Début</label>
+                    <input id={`category-from-date-${category.id}`} type="date" value={fromDate} onChange={(event) => setFromDate(event.target.value)} className="field h-10" />
+                  </div>
+                  <div>
+                    <label htmlFor={`category-to-date-${category.id}`} className="mb-1 block text-[10px] font-bold text-muted">Fin</label>
+                    <input id={`category-to-date-${category.id}`} type="date" value={toDate} onChange={(event) => setToDate(event.target.value)} className="field h-10" />
+                  </div>
+                </div>
               </div>
               <label className="flex cursor-pointer items-center justify-between rounded-xl border border-line p-3">
                 <span>

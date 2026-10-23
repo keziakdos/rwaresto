@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 import { json, handleApiError } from "@/lib/api";
-import { getOpenState, getSettings, isWithinWindow } from "@/lib/settings";
+import { getOpenState, getSettings, isWithinDateRange, isWithinWindow } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
@@ -34,12 +34,15 @@ export async function GET() {
       },
     });
 
+    const dated = categories.filter((category) =>
+      isWithinDateRange(category.availableFromDate, category.availableToDate),
+    );
     const scheduled = openState.isOpen
-      ? categories.filter((category) =>
+      ? dated.filter((category) =>
           isWithinWindow(category.availableFrom, category.availableTo),
         )
-      : categories;
-    const visible = scheduled.length ? scheduled : categories;
+      : dated;
+    const visible = scheduled.length ? scheduled : dated;
     const breakfast = openState.isOpen && visible.some((category) => category.slug === "petit-dejeuner");
     const service = !openState.isOpen
       ? {
@@ -68,6 +71,8 @@ export async function GET() {
         image: category.image,
         availableFrom: category.availableFrom,
         availableTo: category.availableTo,
+        availableFromDate: category.availableFromDate,
+        availableToDate: category.availableToDate,
         products: category.products.map((product) => ({
           id: product.id,
           slug: product.slug,

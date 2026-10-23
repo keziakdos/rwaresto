@@ -32,6 +32,9 @@ export async function getSettings(): Promise<SettingsMap> {
 export function parisParts(date = new Date()) {
   const parts = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
     weekday: "short",
     hour: "2-digit",
     minute: "2-digit",
@@ -75,6 +78,19 @@ export function isWithinWindow(
   }
   if (start !== null) return now >= start;
   if (end !== null) return now < end;
+  return true;
+}
+
+export function isWithinDateRange(
+  from: string | null | undefined,
+  to: string | null | undefined,
+  date = new Date(),
+): boolean {
+  if (!from && !to) return true;
+  const parts = parisParts(date);
+  const today = `${parts.year}-${parts.month}-${parts.day}`;
+  if (from && today < from) return false;
+  if (to && today > to) return false;
   return true;
 }
 
