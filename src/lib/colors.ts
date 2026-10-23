@@ -48,21 +48,26 @@ export function themeVariables(primaryColor: string, accentColor: string): Recor
   const brand = hexToRgb(primaryColor) ? primaryColor : "#C4512C";
   const accent = hexToRgb(accentColor) ? accentColor : "#234D3C";
   const brandRgb = rgbChannels(brand);
+  const brandBrightRgb = rgbChannels(mixWithWhite(brand, 0.18));
   const brandDarkRgb = rgbChannels(darken(brand, 0.22));
   const brandSoftRgb = rgbChannels(mixWithWhite(brand, 0.82));
+  const brandDeepRgb = rgbChannels(darken(brand, 0.72));
   const accentRgb = rgbChannels(accent);
   const accentLightRgb = rgbChannels(mixWithWhite(accent, 0.24));
+  const accentBrightRgb = rgbChannels(mixWithWhite(accent, 0.42));
+  const accentSoftRgb = rgbChannels(mixWithWhite(accent, 0.82));
+  const accentDeepRgb = rgbChannels(darken(accent, 0.7));
 
   return {
-    "--color-brand": brand,
-    "--color-brand-dark": darken(brand, 0.22),
-    "--color-brand-soft": mixWithWhite(brand, 0.82),
-    "--color-forest": accent,
-    "--color-forest-light": mixWithWhite(accent, 0.24),
-    ...(brandRgb ? { "--color-brand-rgb": brandRgb } : {}),
-    ...(brandDarkRgb ? { "--color-brand-dark-rgb": brandDarkRgb } : {}),
-    ...(brandSoftRgb ? { "--color-brand-soft-rgb": brandSoftRgb } : {}),
-    ...(accentRgb ? { "--color-forest-rgb": accentRgb } : {}),
-    ...(accentLightRgb ? { "--color-forest-light-rgb": accentLightRgb } : {}),
+    ...(brandRgb ? { "--site-brand": brand, "--site-brand-rgb": brandRgb } : {}),
+    ...(brandBrightRgb ? { "--site-brand-bright-rgb": brandBrightRgb } : {}),
+    ...(brandDarkRgb ? { "--site-brand-dark-rgb": brandDarkRgb } : {}),
+    ...(brandSoftRgb ? { "--site-brand-soft-rgb": brandSoftRgb } : {}),
+    ...(brandDeepRgb ? { "--site-brand-deep-rgb": brandDeepRgb } : {}),
+    ...(accentRgb ? { "--site-accent": accent, "--site-accent-rgb": accentRgb } : {}),
+    ...(accentLightRgb ? { "--site-accent-light-rgb": accentLightRgb } : {}),
+    ...(accentBrightRgb ? { "--site-accent-bright-rgb": accentBrightRgb } : {}),
+    ...(accentSoftRgb ? { "--site-accent-soft-rgb": accentSoftRgb } : {}),
+    ...(accentDeepRgb ? { "--site-accent-deep-rgb": accentDeepRgb } : {}),
   };
 }

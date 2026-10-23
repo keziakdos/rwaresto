@@ -13,17 +13,19 @@ describe("couleurs de thème", () => {
     expect(darken("#FFFFFF", 0.5)).toBe("#808080");
   });
 
-  it("génère les variables utilisées par Tailwind", () => {
+  it("génère les variables personnalisées utilisées par le thème", () => {
     const variables = themeVariables("#C4512C", "#234D3C");
-    expect(variables["--color-brand"]).toBe("#C4512C");
-    expect(variables["--color-brand-rgb"]).toBe("196 81 44");
-    expect(variables["--color-forest"]).toBe("#234D3C");
-    expect(variables["--color-forest-rgb"]).toBe("35 77 60");
+    expect(variables["--site-brand"]).toBe("#C4512C");
+    expect(variables["--site-brand-rgb"]).toBe("196 81 44");
+    expect(variables["--site-accent"]).toBe("#234D3C");
+    expect(variables["--site-accent-rgb"]).toBe("35 77 60");
+    expect(variables["--site-brand-bright-rgb"]).toBeDefined();
+    expect(variables["--site-accent-bright-rgb"]).toBeDefined();
   });
 
   it("revient aux couleurs par défaut si la valeur est invalide", () => {
     const variables = themeVariables("invalide", "");
-    expect(variables["--color-brand"]).toBe("#C4512C");
-    expect(variables["--color-forest"]).toBe("#234D3C");
+    expect(variables["--site-brand"]).toBe("#C4512C");
+    expect(variables["--site-accent"]).toBe("#234D3C");
   });
 });

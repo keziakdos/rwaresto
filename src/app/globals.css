@@ -3,17 +3,29 @@
 @tailwind utilities;
 
 :root {
+  --site-brand: #c4512c;
+  --site-brand-rgb: 196 81 44;
+  --site-brand-bright-rgb: 207 104 70;
+  --site-brand-dark-rgb: 148 53 27;
+  --site-brand-soft-rgb: 247 225 212;
+  --site-brand-deep-rgb: 55 23 12;
+  --site-accent: #173f32;
+  --site-accent-rgb: 23 63 50;
+  --site-accent-light-rgb: 47 102 83;
+  --site-accent-bright-rgb: 88 131 117;
+  --site-accent-soft-rgb: 220 233 226;
+  --site-accent-deep-rgb: 7 19 15;
   --color-cream: #f8f2e8;
   --color-ink: #2a2018;
   --color-surface: #fffcf7;
   --color-muted: #786758;
   --color-line: #e9dfd1;
-  --color-brand: #c4512c;
-  --color-brand-dark: #94351b;
-  --color-brand-soft: #f7e1d4;
-  --color-forest: #173f32;
-  --color-forest-light: #2f6653;
-  --color-forest-soft: #dce9e2;
+  --color-brand: var(--site-brand);
+  --color-brand-dark: rgb(var(--site-brand-dark-rgb));
+  --color-brand-soft: rgb(var(--site-brand-soft-rgb));
+  --color-forest: var(--site-accent);
+  --color-forest-light: rgb(var(--site-accent-light-rgb));
+  --color-forest-soft: rgb(var(--site-accent-soft-rgb));
   --color-sand: #efe3d2;
   --color-gold: #d5a24b;
   --color-cream-rgb: 248 242 232;
@@ -21,12 +33,12 @@
   --color-surface-rgb: 255 252 247;
   --color-muted-rgb: 120 103 88;
   --color-line-rgb: 233 223 209;
-  --color-brand-rgb: 196 81 44;
-  --color-brand-dark-rgb: 148 53 27;
-  --color-brand-soft-rgb: 247 225 212;
-  --color-forest-rgb: 23 63 50;
-  --color-forest-light-rgb: 47 102 83;
-  --color-forest-soft-rgb: 220 233 226;
+  --color-brand-rgb: var(--site-brand-rgb);
+  --color-brand-dark-rgb: var(--site-brand-dark-rgb);
+  --color-brand-soft-rgb: var(--site-brand-soft-rgb);
+  --color-forest-rgb: var(--site-accent-rgb);
+  --color-forest-light-rgb: var(--site-accent-light-rgb);
+  --color-forest-soft-rgb: var(--site-accent-soft-rgb);
   --color-sand-rgb: 239 227 210;
   --color-gold-rgb: 213 162 75;
   --font-sans: "DM Sans Variable", "DM Sans", ui-sans-serif, system-ui, sans-serif;
@@ -41,12 +53,12 @@ html.dark {
   --color-surface: #201a16;
   --color-muted: #b8a595;
   --color-line: #3a2f27;
-  --color-brand: #e2774f;
-  --color-brand-dark: #f09572;
-  --color-brand-soft: #42251b;
-  --color-forest: #76b89d;
-  --color-forest-light: #9fd0ba;
-  --color-forest-soft: #1d3a30;
+  --color-brand: rgb(var(--site-brand-bright-rgb));
+  --color-brand-dark: rgb(var(--site-brand-rgb));
+  --color-brand-soft: rgb(var(--site-brand-deep-rgb));
+  --color-forest: rgb(var(--site-accent-bright-rgb));
+  --color-forest-light: rgb(var(--site-accent-soft-rgb));
+  --color-forest-soft: rgb(var(--site-accent-deep-rgb));
   --color-sand: #2b241e;
   --color-gold: #e1b55f;
   --color-cream-rgb: 20 17 14;
@@ -54,12 +66,12 @@ html.dark {
   --color-surface-rgb: 32 26 22;
   --color-muted-rgb: 184 165 149;
   --color-line-rgb: 58 47 39;
-  --color-brand-rgb: 226 119 79;
-  --color-brand-dark-rgb: 240 149 114;
-  --color-brand-soft-rgb: 66 37 27;
-  --color-forest-rgb: 118 184 157;
-  --color-forest-light-rgb: 159 208 186;
-  --color-forest-soft-rgb: 29 58 48;
+  --color-brand-rgb: var(--site-brand-bright-rgb);
+  --color-brand-dark-rgb: var(--site-brand-rgb);
+  --color-brand-soft-rgb: var(--site-brand-deep-rgb);
+  --color-forest-rgb: var(--site-accent-bright-rgb);
+  --color-forest-light-rgb: var(--site-accent-soft-rgb);
+  --color-forest-soft-rgb: var(--site-accent-deep-rgb);
   --color-sand-rgb: 43 36 30;
   --color-gold-rgb: 225 181 95;
   color-scheme: dark;
@@ -258,6 +270,23 @@ body {
 }
 
 .dark .bg-white {
+  background-color: rgb(var(--color-surface-rgb));
+}
+
+.dark .admin-nav-item-active {
+  background-color: rgb(255 255 255 / 0.1);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+
+.dark .admin-nav-item-active:hover {
+  background-color: rgb(255 255 255 / 0.14);
+  color: #fff;
+}
+
+.dark .btn-secondary {
+  color: rgb(var(--color-ink-rgb));
+  border-color: rgb(var(--color-line-rgb));
   background-color: rgb(var(--color-surface-rgb));
 }
 
