@@ -27,6 +27,6 @@ docker compose -f "$COMPOSE_FILE" cp "app:/tmp/$ARCHIVE" "$BACKUP_DIR/$ARCHIVE"
 docker compose -f "$COMPOSE_FILE" exec -T app rm -f "/tmp/$ARCHIVE"
 
 echo "→ Rotation des archives de plus de $KEEP_DAYS jours…"
-find "$BACKUP_DIR" -name 'rwaresto-*.tar.gz' -type f -mtime "+$KEEP_DAYS" -delete
+find "$BACKUP_DIR" -maxdepth 1 -name 'rwaresto-*.tar.gz' -type f -mtime "+$KEEP_DAYS" -delete
 
 echo "✓ Sauvegarde : $BACKUP_DIR/$ARCHIVE"
