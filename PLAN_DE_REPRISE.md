@@ -21,6 +21,7 @@ Le site est en production sur `https://rwaresto.rwazap.com`, avec HTTPS, PWA, co
 - Sauvegarde Telegram configurée : envoi tous les 10 jours, archive SQLite sans images, refus au-delà de 30 Mo, confirmation Telegram obligatoire.
 - Premier envoi Telegram testé : archive de 22,9 Ko contenant uniquement `rwaresto-backup.db`, intégrité SQLite vérifiée.
 - Script de vérification HTTP de production ajouté et exécuté avec succès.
+- Script `verify-backup.sh` ajouté pour contrôler l'intégrité des archives sans toucher à la production.
 - Documentation : `docs/EXPLOITATION.md`.
 
 ### En cours
