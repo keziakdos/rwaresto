@@ -6,13 +6,19 @@ import { useRouter } from "next/navigation";
 import {
   AlertCircle,
   Bike,
+  CheckCircle2,
+  ChevronRight,
   Minus,
   Pencil,
+  Phone,
   Plus,
   Send,
+  ShieldCheck,
   ShoppingBag,
   Store,
   Trash2,
+  UserRound,
+  UtensilsCrossed,
   X,
 } from "lucide-react";
 import {
@@ -25,6 +31,7 @@ import {
 } from "./cart-provider";
 import { useMoney, useSite } from "./site-provider";
 import { useToast } from "./toast-provider";
+import { EmptyState } from "./ui/empty-state";
 
 export function CartDrawer({
   open,
@@ -141,100 +148,118 @@ export function CartDrawer({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center" role="dialog" aria-modal="true" aria-label="Votre panier">
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Votre panier"
+    >
       <button
         type="button"
         onClick={() => !loading && onClose()}
         aria-label="Fermer le panier"
-        className="absolute inset-0 bg-stone-950/45 backdrop-blur-[2px] animate-fade-in"
+        className="absolute inset-0 animate-fade-in bg-stone-950/60 backdrop-blur-[3px]"
       />
-      <div className="relative flex max-h-[94dvh] w-full max-w-2xl flex-col overflow-hidden rounded-t-[2rem] bg-cream shadow-soft animate-slide-up">
-        <div className="flex shrink-0 items-center justify-between border-b border-black/5 bg-white px-4 py-3.5">
-          <div>
-            <h2 className="font-display text-xl font-bold text-forest">Votre panier</h2>
-            <p className="text-xs font-semibold text-ink/45">
-              {cart.count} article{cart.count > 1 ? "s" : ""} · {money(cart.subtotalCents)}
-            </p>
+      <div className="relative flex max-h-[95dvh] w-full max-w-2xl animate-slide-up flex-col overflow-hidden rounded-t-[2rem] bg-cream shadow-soft sm:rounded-[2rem]">
+        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-line/70 bg-surface px-4 py-4 sm:px-5">
+          <div className="flex items-center gap-3">
+            <span className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-forest text-white">
+              <ShoppingBag className="h-5 w-5" />
+              {cart.count ? (
+                <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[10px] font-extrabold text-white">
+                  {cart.count}
+                </span>
+              ) : null}
+            </span>
+            <div>
+              <h2 className="font-display text-xl font-semibold text-ink">Votre panier</h2>
+              <p className="text-[11px] font-semibold text-muted">
+                {cart.count} article{cart.count > 1 ? "s" : ""} · {money(cart.subtotalCents)}
+              </p>
+            </div>
           </div>
           <button
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-ink/70"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-sand text-muted transition hover:text-ink"
             aria-label="Fermer"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-5">
           {cart.lines.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-14 text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-soft text-brand">
-                <ShoppingBag className="h-7 w-7" />
-              </div>
-              <p className="mt-4 font-display text-xl font-bold text-forest">Le panier est vide</p>
-              <p className="mt-1 text-sm text-ink/50">Ajoutez un plat depuis le menu.</p>
-              <button type="button" onClick={onClose} className="btn-secondary mt-4">
-                Retour au menu
-              </button>
-            </div>
+            <EmptyState
+              icon={ShoppingBag}
+              title="Votre panier est vide"
+              description="Parcourez la carte et ajoutez vos plats préférés."
+              action={
+                <button type="button" onClick={onClose} className="btn-secondary">
+                  <UtensilsCrossed className="h-4 w-4" />
+                  Retour au menu
+                </button>
+              }
+            />
           ) : (
             <div className="space-y-2.5">
               {cart.lines.map((line) => (
-                <div key={line.key} className="flex gap-3 rounded-2xl border border-black/5 bg-white p-3">
+                <div key={line.key} className="flex gap-3 rounded-[1.25rem] border border-line/70 bg-surface p-2.5 shadow-card sm:p-3">
                   {line.image ? (
                     <Image
                       src={line.image}
                       alt=""
-                      width={76}
-                      height={76}
-                      className="h-[76px] w-[76px] shrink-0 rounded-xl object-cover"
+                      width={84}
+                      height={84}
+                      className="h-20 w-20 shrink-0 rounded-2xl object-cover sm:h-[84px] sm:w-[84px]"
                     />
                   ) : (
-                    <div className="flex h-[76px] w-[76px] shrink-0 items-center justify-center rounded-xl bg-sand">
+                    <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-sand">
                       <Image src="/logo.png" alt="" width={40} height={40} className="opacity-30" />
                     </div>
                   )}
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
                       <p className="text-sm font-extrabold leading-tight text-ink">{line.name}</p>
-                      <p className="shrink-0 text-sm font-extrabold">{money(line.unitPriceCents * line.quantity)}</p>
+                      <p className="shrink-0 text-sm font-extrabold tabular-nums text-forest">
+                        {money(line.unitPriceCents * line.quantity)}
+                      </p>
                     </div>
                     {line.options.length ? (
-                      <p className="mt-0.5 text-[11px] leading-snug text-ink/45">
+                      <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-muted">
                         {line.options.map((option) => option.choiceName).join(" · ")}
                       </p>
                     ) : null}
                     {line.note ? (
-                      <p className="mt-0.5 text-[11px] italic text-ink/40">« {line.note} »</p>
+                      <p className="mt-0.5 truncate text-[11px] italic text-muted/75">« {line.note} »</p>
                     ) : null}
-                    <div className="mt-2 flex items-center justify-between gap-2">
-                      <div className="flex items-center rounded-full bg-stone-100">
+                    <div className="mt-2.5 flex items-center justify-between gap-2">
+                      <div className="flex items-center rounded-full border border-line bg-sand/45 p-0.5">
                         <button
                           type="button"
                           onClick={() => cart.updateQuantity(line.key, line.quantity - 1)}
-                          className="flex h-8 w-8 items-center justify-center rounded-full text-ink/65"
+                          className="flex h-7 w-7 items-center justify-center rounded-full text-ink/65 transition hover:bg-surface"
                           aria-label={`Diminuer ${line.name}`}
                         >
                           <Minus className="h-3.5 w-3.5" />
                         </button>
-                        <span className="w-5 text-center text-xs font-extrabold">{line.quantity}</span>
+                        <span className="w-5 text-center text-xs font-extrabold tabular-nums">{line.quantity}</span>
                         <button
                           type="button"
                           onClick={() => cart.updateQuantity(line.key, line.quantity + 1)}
                           disabled={line.quantity >= 20}
-                          className="flex h-8 w-8 items-center justify-center rounded-full text-ink/65 disabled:opacity-30"
+                          className="flex h-7 w-7 items-center justify-center rounded-full text-ink/65 transition hover:bg-surface disabled:opacity-30"
                           aria-label={`Augmenter ${line.name}`}
                         >
                           <Plus className="h-3.5 w-3.5" />
                         </button>
                       </div>
-                      <div className="flex gap-1">
+                      <div className="flex gap-0.5">
                         <button
                           type="button"
                           onClick={() => onEdit(line)}
-                          className="flex h-8 items-center gap-1 rounded-full px-2 text-[11px] font-bold text-forest hover:bg-forest/5"
+                          className="flex h-8 items-center gap-1 rounded-full px-2 text-[11px] font-bold text-forest transition hover:bg-forest/5"
                         >
                           <Pencil className="h-3 w-3" />
                           Modifier
@@ -242,7 +267,7 @@ export function CartDrawer({
                         <button
                           type="button"
                           onClick={() => cart.removeItem(line.key)}
-                          className="flex h-8 w-8 items-center justify-center rounded-full text-red-600 hover:bg-red-50"
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-red-600 transition hover:bg-red-50"
                           aria-label={`Supprimer ${line.name}`}
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -257,31 +282,44 @@ export function CartDrawer({
 
           {cart.lines.length ? (
             <div className="mt-5 space-y-4">
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => cart.setMode("dine_in")}
-                  className={`flex items-center justify-center gap-2 rounded-2xl border-2 py-3 text-sm font-extrabold ${
-                    cart.mode === "dine_in"
-                      ? "border-brand bg-brand-soft text-brand-dark"
-                      : "border-black/10 bg-white text-ink/55"
-                  }`}
-                >
-                  <Store className="h-4 w-4" />
-                  Sur place
-                </button>
-                <button
-                  type="button"
-                  onClick={() => cart.setMode("takeaway")}
-                  className={`flex items-center justify-center gap-2 rounded-2xl border-2 py-3 text-sm font-extrabold ${
-                    cart.mode === "takeaway"
-                      ? "border-brand bg-brand-soft text-brand-dark"
-                      : "border-black/10 bg-white text-ink/55"
-                  }`}
-                >
-                  <Bike className="h-4 w-4" />
-                  À emporter
-                </button>
+              <div>
+                <p className="mb-2 text-sm font-extrabold text-ink">Comment souhaitez-vous être servi ?</p>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => cart.setMode("dine_in")}
+                    className={`flex items-center gap-3 rounded-2xl border-2 p-3.5 text-left transition ${
+                      cart.mode === "dine_in"
+                        ? "border-brand bg-brand-soft/60"
+                        : "border-line bg-surface hover:border-brand/30"
+                    }`}
+                  >
+                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${cart.mode === "dine_in" ? "bg-brand text-white" : "bg-sand text-forest"}`}>
+                      <Store className="h-4 w-4" />
+                    </span>
+                    <span>
+                      <span className={`block text-sm font-extrabold ${cart.mode === "dine_in" ? "text-brand-dark" : "text-ink"}`}>Sur place</span>
+                      <span className="block text-[10px] text-muted">À table</span>
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => cart.setMode("takeaway")}
+                    className={`flex items-center gap-3 rounded-2xl border-2 p-3.5 text-left transition ${
+                      cart.mode === "takeaway"
+                        ? "border-brand bg-brand-soft/60"
+                        : "border-line bg-surface hover:border-brand/30"
+                    }`}
+                  >
+                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${cart.mode === "takeaway" ? "bg-brand text-white" : "bg-sand text-forest"}`}>
+                      <Bike className="h-4 w-4" />
+                    </span>
+                    <span>
+                      <span className={`block text-sm font-extrabold ${cart.mode === "takeaway" ? "text-brand-dark" : "text-ink"}`}>À emporter</span>
+                      <span className="block text-[10px] text-muted">Au comptoir</span>
+                    </span>
+                  </button>
+                </div>
               </div>
 
               {cart.mode === "dine_in" ? (
@@ -289,21 +327,30 @@ export function CartDrawer({
                   <label htmlFor="cart-table" className="label">
                     Numéro de table
                   </label>
-                  <input
-                    id="cart-table"
-                    inputMode="numeric"
-                    value={table}
-                    onChange={(event) => setTable(event.target.value.replace(/\D/g, ""))}
-                    placeholder="Ex. 12"
-                    className="field font-bold"
-                  />
+                  <div className="relative">
+                    <Store className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-brand" />
+                    <input
+                      id="cart-table"
+                      inputMode="numeric"
+                      value={table}
+                      onChange={(event) => setTable(event.target.value.replace(/\D/g, ""))}
+                      placeholder="Ex. 12"
+                      className="field pl-11 font-bold"
+                    />
+                  </div>
                 </div>
               ) : null}
 
-              <div className="rounded-2xl border border-black/5 bg-white p-4">
-                <p className="mb-3 font-display text-base font-bold text-forest">
-                  Qui passe la commande ?
-                </p>
+              <div className="rounded-[1.35rem] border border-line/70 bg-surface p-4 shadow-card">
+                <div className="mb-4 flex items-center gap-2">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-forest-soft text-forest">
+                    <UserRound className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="font-display text-base font-semibold text-ink">Qui passe la commande ?</p>
+                    <p className="text-[10px] text-muted">Chaque personne peut commander et payer séparément.</p>
+                  </div>
+                </div>
                 <div className="space-y-3">
                   <div>
                     <label htmlFor="customer-name" className="label">
@@ -318,28 +365,30 @@ export function CartDrawer({
                       className="field"
                       maxLength={30}
                     />
-                    <p className="mt-1.5 text-[11px] leading-snug text-ink/40">
-                      Il servira à retrouver votre commande à la caisse. À la même table, chacun
-                      utilise son propre pseudo et paie sa commande.
+                    <p className="mt-1.5 text-[11px] leading-snug text-muted">
+                      Il servira à retrouver votre commande à la caisse.
                     </p>
                   </div>
                   <div>
                     <label htmlFor="customer-phone" className="label">
-                      Téléphone <span className="font-normal text-ink/40">(facultatif)</span>
+                      Téléphone <span className="font-normal text-muted">(facultatif)</span>
                     </label>
-                    <input
-                      id="customer-phone"
-                      type="tel"
-                      autoComplete="tel"
-                      value={phone}
-                      onChange={(event) => setPhone(event.target.value.slice(0, 25))}
-                      placeholder="+33 6 00 00 00 00"
-                      className="field"
-                    />
+                    <div className="relative">
+                      <Phone className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted/60" />
+                      <input
+                        id="customer-phone"
+                        type="tel"
+                        autoComplete="tel"
+                        value={phone}
+                        onChange={(event) => setPhone(event.target.value.slice(0, 25))}
+                        placeholder="+33 6 00 00 00 00"
+                        className="field pl-11"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label htmlFor="order-note" className="label">
-                      Remarque générale <span className="font-normal text-ink/40">(facultatif)</span>
+                      Remarque générale <span className="font-normal text-muted">(facultatif)</span>
                     </label>
                     <textarea
                       id="order-note"
@@ -353,17 +402,18 @@ export function CartDrawer({
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-forest/5 p-3.5 text-xs leading-relaxed text-forest/80">
-                <strong className="font-extrabold">Sans paiement en ligne.</strong> Votre commande
-                sera validée par la caisse. Vous paierez à la caisse quand elle sera prête, en
-                donnant votre numéro de table ou votre pseudo.
+              <div className="flex items-start gap-3 rounded-2xl border border-forest/10 bg-forest-soft/60 p-3.5 text-xs leading-relaxed text-forest dark:text-forest">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
+                <p>
+                  <strong className="font-extrabold">Sans paiement en ligne.</strong> Votre commande est validée par la caisse. Vous réglerez sur place en donnant votre table ou votre pseudo.
+                </p>
               </div>
             </div>
           ) : null}
         </div>
 
         {cart.lines.length ? (
-          <div className="shrink-0 border-t border-black/5 bg-white px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
+          <div className="shrink-0 border-t border-line/70 bg-surface px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 sm:px-5">
             {error ? (
               <p role="alert" className="mb-2 flex items-start gap-2 rounded-xl bg-red-50 p-2.5 text-xs font-bold text-red-800">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
@@ -375,20 +425,34 @@ export function CartDrawer({
                 {site.closedReason || "Les commandes sont fermées."}
               </p>
             ) : null}
-            <div className="mb-3 flex items-center justify-between text-sm">
-              <span className="font-bold text-ink/55">Total</span>
-              <span className="font-display text-2xl font-bold text-forest">
-                {money(cart.subtotalCents)}
-              </span>
+            <div className="mb-3 flex items-end justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-muted">Total à régler</p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-[10px] font-medium text-muted">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                  Aucun frais ajouté
+                </p>
+              </div>
+              <p className="font-display text-3xl font-semibold leading-none text-forest">{money(cart.subtotalCents)}</p>
             </div>
             <button
               type="button"
               onClick={submitOrder}
               disabled={loading || !site.isOpen}
-              className="btn-primary min-h-13 w-full text-base"
+              className="btn-primary min-h-14 w-full px-5 text-base"
             >
-              {loading ? "Envoi en cours…" : "Envoyer ma commande"}
-              <Send className="h-5 w-5" />
+              {loading ? (
+                <>
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  Envoi en cours…
+                </>
+              ) : (
+                <>
+                  Envoyer ma commande
+                  <Send className="h-4 w-4" />
+                </>
+              )}
+              {!loading ? <ChevronRight className="ml-auto h-4 w-4 opacity-60" /> : null}
             </button>
           </div>
         ) : null}

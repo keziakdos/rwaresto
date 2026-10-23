@@ -8,17 +8,43 @@ import {
   ArrowRight,
   Bike,
   CheckCircle2,
+  ChefHat,
   Clock,
+  Flame,
+  Leaf,
   MapPin,
   QrCode,
+  Sparkles,
   Store,
   UtensilsCrossed,
+  Wallet,
 } from "lucide-react";
 import { useSite } from "./site-provider";
 import { getTrackedOrders, useCart, type TrackedOrder } from "./cart-provider";
 import { ORDER_STATUS } from "@/lib/constants";
 
 type Mode = "dine_in" | "takeaway";
+
+const HIGHLIGHTS = [
+  {
+    image: "/images/bowl-mafe.webp",
+    title: "Bols signature",
+    text: "Des sauces mijotées lentement, des textures généreuses.",
+    icon: Flame,
+  },
+  {
+    image: "/images/assiette-thieb.webp",
+    title: "Assiettes du voyage",
+    text: "Le réconfort des recettes familiales, dressées avec soin.",
+    icon: Sparkles,
+  },
+  {
+    image: "/images/dessert-degue.webp",
+    title: "Douceurs maison",
+    text: "Une note sucrée pour finir en beauté.",
+    icon: Leaf,
+  },
+];
 
 export function HomeExperience({
   initialTable,
@@ -91,239 +117,379 @@ export function HomeExperience({
   }
 
   return (
-    <div>
-      <section className="relative overflow-hidden px-4 pb-8 pt-7 sm:pt-12">
-        <div
-          className="pointer-events-none absolute -left-20 top-10 h-64 w-64 rounded-full opacity-25 blur-3xl"
-          style={{ background: site.accentColor }}
-        />
-        <div
-          className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full opacity-25 blur-3xl"
-          style={{ background: site.primaryColor }}
-        />
-        <div className="relative mx-auto grid w-full max-w-5xl gap-8 md:grid-cols-2 md:items-center">
-          <div className="animate-slide-up">
-            <div className="mb-4 flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-forest/10 px-3 py-1.5 text-xs font-extrabold text-forest">
+    <div className="overflow-hidden">
+      <section className="relative px-4 pb-10 pt-7 sm:px-6 sm:pb-16 sm:pt-12">
+        <div className="pointer-events-none absolute -left-32 top-12 h-80 w-80 rounded-full bg-brand/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 top-0 h-96 w-96 rounded-full bg-forest/10 blur-3xl" />
+
+        <div className="relative mx-auto grid w-full max-w-6xl items-center gap-10 lg:grid-cols-[1.04fr_.96fr] lg:gap-14">
+          <div className="animate-fade-up">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-forest/10 bg-forest-soft px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-forest">
                 <QrCode className="h-3.5 w-3.5" />
                 Commande à table
               </span>
               <span
-                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-extrabold ${
-                  site.isOpen ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800"
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-extrabold ${
+                  site.isOpen ? "bg-emerald-100 text-emerald-900" : "bg-red-100 text-red-900"
                 }`}
               >
                 <span className="status-dot" />
-                {site.isOpen ? "Ouvert" : "Fermé"}
+                {site.isOpen ? "Ouvert maintenant" : "Commandes fermées"}
               </span>
+              {initialTable ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-brand px-3 py-1.5 text-[11px] font-extrabold text-white shadow-glow">
+                  <MapPin className="h-3.5 w-3.5" />
+                  Table {initialTable}
+                </span>
+              ) : null}
             </div>
-            <h1 className="font-display text-[2.75rem] font-bold leading-[1.05] text-forest sm:text-6xl">
+
+            <p className="mt-7 flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.22em] text-brand">
+              <span className="h-px w-8 bg-brand/40" />
               {site.restaurantName}
-            </h1>
-            <p className="mt-3 max-w-md text-lg font-semibold leading-snug text-ink/65">
-              {site.tagline}
             </p>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink/60">
+            <h1 className="mt-3 max-w-xl text-balance font-display text-[2.8rem] font-semibold leading-[0.98] text-ink sm:text-6xl lg:text-[4.4rem]">
+              {site.tagline}
+            </h1>
+            <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-muted sm:text-lg">
               {site.welcomeMessage}
             </p>
 
-            <div className="mt-6 grid max-w-md grid-cols-3 gap-2 text-center text-[11px] font-bold text-ink/60">
-              <div className="rounded-2xl bg-white/70 px-2 py-3">
-                <UtensilsCrossed className="mx-auto mb-1 h-4 w-4 text-brand" />
-                Composez
-              </div>
-              <div className="rounded-2xl bg-white/70 px-2 py-3">
-                <Clock className="mx-auto mb-1 h-4 w-4 text-brand" />
-                Suivez
-              </div>
-              <div className="rounded-2xl bg-white/70 px-2 py-3">
-                <CheckCircle2 className="mx-auto mb-1 h-4 w-4 text-brand" />
-                Payez à la caisse
-              </div>
+            <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:items-center">
+              <a href="#commander" className="btn-primary min-h-14 px-7 text-base">
+                Commander maintenant
+                <ArrowRight className="h-5 w-5" />
+              </a>
+              <Link href="/menu" className="btn-secondary min-h-14 px-6 text-base">
+                <UtensilsCrossed className="h-4 w-4" />
+                Parcourir la carte
+              </Link>
+            </div>
+
+            <div className="mt-8 grid max-w-lg grid-cols-3 gap-2">
+              {[
+                { icon: ChefHat, title: "Fait minute", text: "Cuisiné sur place" },
+                { icon: Clock, title: "Suivi live", text: "Statut en direct" },
+                { icon: Wallet, title: "À la caisse", text: "Sans paiement en ligne" },
+              ].map((item) => (
+                <div key={item.title} className="rounded-2xl border border-line/70 bg-surface/70 px-3 py-3 backdrop-blur">
+                  <item.icon className="h-4 w-4 text-brand" />
+                  <p className="mt-2 text-[11px] font-extrabold text-ink">{item.title}</p>
+                  <p className="text-[10px] font-medium text-muted">{item.text}</p>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-sm md:max-w-none">
-            <div className="absolute -inset-2 rotate-2 rounded-[2.4rem] bg-brand/10" />
-            <div className="relative overflow-hidden rounded-[2.2rem] border border-white/60 shadow-soft">
+          <div className="relative mx-auto w-full max-w-[30rem] animate-fade-up lg:max-w-none [animation-delay:120ms]">
+            <div className="absolute -inset-3 -rotate-2 rounded-[3rem] border border-brand/15 bg-brand-soft/40" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-sand shadow-lift sm:aspect-[5/5.2]">
               <Image
                 src="/images/bowl-yassa.webp"
-                alt="Bol généreux aux couleurs des épices"
-                width={960}
-                height={720}
+                alt="Bowl Poulet Yassa généreux, riz parfumé et légumes croquants"
+                fill
                 priority
-                className="aspect-[4/3] w-full object-cover"
+                sizes="(max-width: 1024px) 90vw, 560px"
+                className="object-cover"
               />
-              <div className="absolute inset-x-3 bottom-3 rounded-2xl bg-white/90 px-4 py-3 backdrop-blur">
-                <p className="text-xs font-bold uppercase tracking-wide text-brand">Aujourd'hui</p>
-                <p className="font-display text-lg font-bold text-forest">
-                  Des bols préparés minute
-                </p>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d]/75 via-transparent to-transparent" />
+              <div className="absolute inset-x-5 bottom-5 rounded-[1.4rem] border border-white/20 bg-black/25 p-4 text-white backdrop-blur-md">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/60">La signature</p>
+                <div className="mt-1 flex items-end justify-between gap-3">
+                  <div>
+                    <p className="font-display text-2xl font-semibold leading-none">Bowl Poulet Yassa</p>
+                    <p className="mt-1.5 text-xs font-medium text-white/70">Citron, oignons confits, légumes croquants</p>
+                  </div>
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-forest">
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                </div>
               </div>
+            </div>
+
+            <div className="absolute -left-3 bottom-24 hidden w-40 rounded-3xl border border-white/60 bg-surface p-3 shadow-soft sm:block lg:-left-10">
+              <div className="flex items-center gap-2">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold/20 text-amber-700">
+                  <Sparkles className="h-4 w-4" />
+                </span>
+                <div>
+                  <p className="text-xs font-extrabold text-ink">Épices maison</p>
+                  <p className="text-[10px] text-muted">Torréfiées chaque jour</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="absolute -right-2 top-8 hidden rounded-2xl border border-white/60 bg-surface/95 px-3.5 py-3 shadow-card backdrop-blur sm:block lg:-right-6">
+              <p className="text-[10px] font-bold uppercase tracking-wide text-muted">Service</p>
+              <p className="mt-0.5 flex items-center gap-1.5 font-display text-lg font-semibold text-forest">
+                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                {site.isOpen ? "En salle" : "Fermé"}
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-5xl px-4">
-        <div className="card overflow-hidden p-5 sm:p-7">
-          {!site.isOpen ? (
-            <div className="mb-5 flex items-start gap-3 rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-900">
-              <Store className="mt-0.5 h-5 w-5 shrink-0" />
-              <div>
-                <p>Les commandes sont fermées.</p>
-                <p className="mt-1 font-medium text-red-800">
-                  {site.closedReason || site.hoursText}
-                </p>
-              </div>
-            </div>
-          ) : null}
+      <section id="commander" className="scroll-mt-24 px-4 sm:px-6">
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="card-elevated overflow-hidden">
+            <div className="grid lg:grid-cols-[.9fr_1.1fr]">
+              <div className="relative overflow-hidden bg-forest px-5 py-7 text-white sm:px-7 lg:px-8 lg:py-9 dark:bg-[#102b22]">
+                <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full border-[28px] border-white/5" />
+                <div className="pointer-events-none absolute -bottom-20 -left-10 h-52 w-52 rounded-full bg-brand/20 blur-3xl" />
+                <div className="relative">
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/45">Votre commande</p>
+                  <h2 className="mt-2 max-w-xs font-display text-3xl font-semibold leading-tight sm:text-4xl">
+                    Installez-vous, on s&apos;occupe du reste.
+                  </h2>
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/65">
+                    Choisissez votre mode de service, indiquez votre table et composez votre repas.
+                  </p>
 
-          <div className="grid gap-5 md:grid-cols-[1fr_1fr_auto] md:items-end">
-            <div>
-              <p className="mb-2 text-sm font-extrabold text-ink/75">Vous mangez…</p>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setMode("dine_in")}
-                  className={`flex min-h-16 flex-col items-center justify-center rounded-2xl border-2 px-3 py-3 text-sm font-extrabold transition ${
-                    mode === "dine_in"
-                      ? "border-brand bg-brand-soft text-brand-dark"
-                      : "border-black/10 bg-white text-ink/60 hover:border-brand/30"
-                  }`}
-                >
-                  <Store className="mb-1 h-5 w-5" />
-                  Sur place
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMode("takeaway")}
-                  className={`flex min-h-16 flex-col items-center justify-center rounded-2xl border-2 px-3 py-3 text-sm font-extrabold transition ${
-                    mode === "takeaway"
-                      ? "border-brand bg-brand-soft text-brand-dark"
-                      : "border-black/10 bg-white text-ink/60 hover:border-brand/30"
-                  }`}
-                >
-                  <Bike className="mb-1 h-5 w-5" />
-                  À emporter
-                </button>
-              </div>
-            </div>
-
-            <div>
-              {mode === "dine_in" ? (
-                <>
-                  <label htmlFor="table-number" className="mb-2 block text-sm font-extrabold text-ink/75">
-                    Votre table
-                  </label>
-                  <div className="relative">
-                    <MapPin className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-brand" />
-                    <input
-                      id="table-number"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      value={table}
-                      onChange={(event) => setTable(event.target.value.replace(/\D/g, ""))}
-                      placeholder="Numéro de table"
-                      className="field pl-11 text-base font-bold"
-                      aria-describedby={error ? "home-error" : undefined}
-                    />
+                  <div className="mt-7 space-y-2.5">
+                    {[
+                      { icon: QrCode, title: "Scannez ou saisissez", text: "Votre table est reconnue automatiquement." },
+                      { icon: ChefHat, title: "La cuisine prépare", text: "Suivez l'avancement en temps réel." },
+                      { icon: CheckCircle2, title: "Payez à la caisse", text: "Donnez votre pseudo au moment de régler." },
+                    ].map((step, index) => (
+                      <div key={step.title} className="flex items-start gap-3">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/10">
+                          <step.icon className="h-4 w-4 text-[#f0b27a]" />
+                        </span>
+                        <div>
+                          <p className="text-sm font-bold">
+                            <span className="mr-1.5 text-white/35">0{index + 1}</span>
+                            {step.title}
+                          </p>
+                          <p className="text-xs leading-snug text-white/55">{step.text}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  {initialTable ? (
-                    <p className="mt-2 text-xs font-bold text-emerald-700">
-                      Table {initialTable} détectée par le QR code
-                    </p>
+                </div>
+              </div>
+
+              <div className="p-5 sm:p-7 lg:p-8">
+                {!site.isOpen ? (
+                  <div className="mb-5 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-900">
+                    <Store className="mt-0.5 h-5 w-5 shrink-0" />
+                    <div>
+                      <p className="font-extrabold">Les commandes sont fermées.</p>
+                      <p className="mt-0.5 font-medium text-red-800">{site.closedReason || site.hoursText}</p>
+                    </div>
+                  </div>
+                ) : null}
+
+                <p className="text-sm font-extrabold text-ink">Vous mangez…</p>
+                <div className="mt-2.5 grid grid-cols-2 gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setMode("dine_in")}
+                    aria-pressed={mode === "dine_in"}
+                    className={`group relative flex min-h-[6.2rem] flex-col items-start justify-between rounded-[1.4rem] border-2 p-4 text-left transition ${
+                      mode === "dine_in"
+                        ? "border-brand bg-brand-soft/70 shadow-card"
+                        : "border-line bg-surface hover:border-brand/30"
+                    }`}
+                  >
+                    <span className={`flex h-10 w-10 items-center justify-center rounded-2xl ${mode === "dine_in" ? "bg-brand text-white" : "bg-sand text-forest"}`}>
+                      <Store className="h-5 w-5" />
+                    </span>
+                    <span>
+                      <span className={`block text-sm font-extrabold ${mode === "dine_in" ? "text-brand-dark" : "text-ink"}`}>Sur place</span>
+                      <span className="block text-[11px] font-medium text-muted">Je suis à une table</span>
+                    </span>
+                    {mode === "dine_in" ? <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-brand" /> : null}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMode("takeaway")}
+                    aria-pressed={mode === "takeaway"}
+                    className={`group relative flex min-h-[6.2rem] flex-col items-start justify-between rounded-[1.4rem] border-2 p-4 text-left transition ${
+                      mode === "takeaway"
+                        ? "border-brand bg-brand-soft/70 shadow-card"
+                        : "border-line bg-surface hover:border-brand/30"
+                    }`}
+                  >
+                    <span className={`flex h-10 w-10 items-center justify-center rounded-2xl ${mode === "takeaway" ? "bg-brand text-white" : "bg-sand text-forest"}`}>
+                      <Bike className="h-5 w-5" />
+                    </span>
+                    <span>
+                      <span className={`block text-sm font-extrabold ${mode === "takeaway" ? "text-brand-dark" : "text-ink"}`}>À emporter</span>
+                      <span className="block text-[11px] font-medium text-muted">Je récupère sur place</span>
+                    </span>
+                    {mode === "takeaway" ? <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-brand" /> : null}
+                  </button>
+                </div>
+
+                <div className="mt-5">
+                  {mode === "dine_in" ? (
+                    <>
+                      <label htmlFor="table-number" className="mb-2 block text-sm font-extrabold text-ink">
+                        Votre numéro de table
+                      </label>
+                      <div className="relative">
+                        <MapPin className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-brand" />
+                        <input
+                          id="table-number"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          value={table}
+                          onChange={(event) => setTable(event.target.value.replace(/\D/g, ""))}
+                          placeholder="Ex. 12"
+                          className="field h-14 pl-12 text-base font-bold"
+                          aria-describedby={error ? "home-error" : undefined}
+                        />
+                        {initialTable ? (
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-extrabold text-emerald-900">
+                            QR détecté
+                          </span>
+                        ) : null}
+                      </div>
+                      <p className="mt-2 text-xs text-muted">
+                        {initialTable ? `Table ${initialTable} reconnue. Vous pouvez modifier le numéro si besoin.` : "Le numéro figure sur le QR code posé sur votre table."}
+                      </p>
+                    </>
                   ) : (
-                    <p className="mt-2 text-xs text-ink/45">Indiqué sur le QR code de votre table.</p>
+                    <div className="flex min-h-14 items-center gap-3 rounded-2xl border border-line bg-sand/50 px-4 text-sm text-muted">
+                      <Bike className="h-5 w-5 shrink-0 text-forest" />
+                      <p>
+                        <span className="font-extrabold text-ink">Commande à emporter.</span> On prépare, vous récupérez au comptoir.
+                      </p>
+                    </div>
                   )}
-                </>
-              ) : (
-                <>
-                  <p className="mb-2 text-sm font-extrabold text-ink/75">À emporter</p>
-                  <div className="flex min-h-12 items-center gap-2 rounded-2xl bg-sand/60 px-4 text-sm font-semibold text-ink/60">
-                    <Bike className="h-5 w-5 text-forest" />
-                    Commandez, on prépare, vous récupérez sur place.
-                  </div>
-                </>
-              )}
+                </div>
+
+                {error ? (
+                  <p id="home-error" role="alert" className="mt-3 rounded-xl bg-red-50 px-3 py-2 text-sm font-bold text-red-800">
+                    {error}
+                  </p>
+                ) : null}
+
+                <button
+                  type="button"
+                  onClick={startOrder}
+                  disabled={!site.isOpen || loading}
+                  className="btn-primary mt-5 min-h-14 w-full px-7 text-base"
+                >
+                  {loading ? "Vérification…" : "Voir la carte et commander"}
+                  <ArrowRight className="h-5 w-5" />
+                </button>
+                <p className="mt-3 flex items-center justify-center gap-1.5 text-[11px] font-medium text-muted">
+                  <Wallet className="h-3.5 w-3.5" />
+                  Aucun paiement en ligne · règlement à la caisse
+                </p>
+              </div>
             </div>
 
-            <button
-              type="button"
-              onClick={startOrder}
-              disabled={!site.isOpen || loading}
-              className="btn-primary min-h-14 w-full px-7 text-base md:w-auto"
-            >
-              {loading ? "Vérification…" : "Commander"}
-              <ArrowRight className="h-5 w-5" />
-            </button>
+            {activeOrder ? (
+              <Link
+                href={`/commande/${activeOrder.id}?t=${activeOrder.token}`}
+                className="flex items-center gap-3 border-t border-line/70 bg-sand/35 px-5 py-4 transition hover:bg-sand/60 sm:px-7"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest text-white">
+                  <Clock className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[10px] font-extrabold uppercase tracking-[0.14em] text-muted">
+                    Commande en cours · {activeOrder.orderNumber}
+                  </span>
+                  <span className="block truncate text-sm font-extrabold text-ink">
+                    {ORDER_STATUS[activeOrder.status as keyof typeof ORDER_STATUS]?.label || "Suivre ma commande"}
+                  </span>
+                </span>
+                <span className="hidden text-xs font-bold text-brand sm:block">Suivre</span>
+                <ArrowRight className="h-5 w-5 text-brand" />
+              </Link>
+            ) : null}
           </div>
-
-          {error ? (
-            <p id="home-error" role="alert" className="mt-3 text-sm font-bold text-red-700">
-              {error}
-            </p>
-          ) : null}
-
-          {!site.isOpen ? (
-            <p className="mt-3 text-xs font-medium text-ink/50">
-              {site.hoursText} · {site.address}
-            </p>
-          ) : null}
         </div>
-
-        {activeOrder ? (
-          <Link
-            href={`/commande/${activeOrder.id}?t=${activeOrder.token}`}
-            className="mt-4 flex items-center gap-3 rounded-2xl border border-forest/10 bg-forest px-4 py-3.5 text-white shadow-card transition hover:bg-forest-light"
-          >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15">
-              <Clock className="h-5 w-5" />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-xs font-bold uppercase tracking-wide text-white/60">
-                Commande en cours · {activeOrder.orderNumber}
-              </span>
-              <span className="block truncate text-sm font-extrabold">
-                {ORDER_STATUS[activeOrder.status as keyof typeof ORDER_STATUS]?.label ||
-                  "Suivre ma commande"}
-              </span>
-            </span>
-            <ArrowRight className="h-5 w-5" />
-          </Link>
-        ) : null}
       </section>
 
-      <section className="mx-auto mt-8 w-full max-w-5xl px-4">
-        <div className="grid gap-3 sm:grid-cols-3">
-          {[
-            {
-              icon: QrCode,
-              title: "1. Scannez",
-              text: "Le QR code de votre table ouvre le menu, table déjà renseignée.",
-            },
-            {
-              icon: UtensilsCrossed,
-              title: "2. Composez",
-              text: "Choisissez vos plats et options. Chaque personne commande pour elle.",
-            },
-            {
-              icon: CheckCircle2,
-              title: "3. Payez à la caisse",
-              text: "Quand c'est prêt, donnez votre table ou votre pseudo pour payer.",
-            },
-          ].map((step) => (
-            <div key={step.title} className="rounded-3xl border border-black/5 bg-white/65 p-4">
-              <step.icon className="mb-2 h-5 w-5 text-brand" />
-              <p className="font-display text-base font-bold text-forest">{step.title}</p>
-              <p className="mt-1 text-sm leading-snug text-ink/55">{step.text}</p>
+      <section className="px-4 pt-14 sm:px-6 sm:pt-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="eyebrow">La maison</p>
+              <h2 className="mt-2 max-w-xl font-display text-3xl font-semibold leading-tight text-ink sm:text-4xl">
+                Des recettes qui racontent un voyage
+              </h2>
             </div>
-          ))}
+            <Link href="/menu" className="group inline-flex items-center gap-2 text-sm font-extrabold text-brand">
+              Voir toute la carte
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-soft transition group-hover:bg-brand group-hover:text-white">
+                <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+          </div>
+
+          <div className="mt-7 grid gap-4 sm:grid-cols-3">
+            {HIGHLIGHTS.map((item, index) => (
+              <Link
+                key={item.title}
+                href="/menu"
+                className="group relative overflow-hidden rounded-[1.8rem] bg-forest shadow-card"
+                style={{ animationDelay: `${index * 80}ms` }}
+              >
+                <div className="relative aspect-[4/3]">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                    className="object-cover transition duration-700 group-hover:scale-[1.04]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#12251d]/90 via-[#12251d]/10 to-transparent" />
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 backdrop-blur">
+                    <item.icon className="h-4 w-4 text-[#f0b27a]" />
+                  </span>
+                  <p className="mt-3 font-display text-xl font-semibold">{item.title}</p>
+                  <p className="mt-1 text-xs leading-snug text-white/65">{item.text}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-        <p className="mt-5 text-center text-xs font-semibold text-ink/45">
-          Plusieurs personnes à la même table ? Chacun commande avec son prénom ou pseudo et paie
-          sa propre commande.
-        </p>
+      </section>
+
+      <section id="etapes" className="scroll-mt-24 px-4 pt-14 sm:px-6 sm:pt-20">
+        <div className="mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] border border-line/70 bg-surface shadow-card">
+          <div className="grid lg:grid-cols-[.8fr_1.2fr]">
+            <div className="relative overflow-hidden bg-[#12352a] p-6 text-white sm:p-9 dark:bg-[#0d281f]">
+              <div className="pointer-events-none absolute -bottom-16 -right-16 h-56 w-56 rounded-full bg-brand/25 blur-3xl" />
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/45">Simple & fluide</p>
+              <h2 className="mt-2 font-display text-3xl font-semibold leading-tight sm:text-4xl">
+                Trois étapes, zéro friction.
+              </h2>
+              <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/60">
+                Chaque personne à la table peut commander avec son prénom ou pseudo et régler sa propre commande.
+              </p>
+              <div className="mt-8 flex items-center gap-2 text-[11px] font-bold text-white/50">
+                <span className="h-px w-10 bg-white/20" />
+                À votre rythme
+              </div>
+            </div>
+            <div className="grid gap-0 sm:grid-cols-3">
+              {[
+                { icon: QrCode, title: "Scannez", text: "Le QR code de votre table ouvre le menu, table déjà renseignée." },
+                { icon: UtensilsCrossed, title: "Composez", text: "Choisissez vos plats et options. Chaque personne commande pour elle." },
+                { icon: CheckCircle2, title: "Savourez", text: "Suivez la préparation, récupérez votre commande et payez à la caisse." },
+              ].map((step, index) => (
+                <div key={step.title} className="relative border-b border-line/70 p-6 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+                  <span className="text-[10px] font-extrabold tracking-[0.2em] text-brand">0{index + 1}</span>
+                  <span className="mt-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-soft text-brand-dark">
+                    <step.icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="mt-4 font-display text-xl font-semibold text-ink">{step.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted">{step.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );
