@@ -69,6 +69,7 @@ model Product {
   archived    Boolean  @default(false)
   vegetarian  Boolean  @default(false)
   vegan       Boolean  @default(false)
+  featured    Boolean  @default(false)
   spicy       Boolean  @default(false)
   halal       Boolean  @default(false)
   isNew       Boolean  @default(false)

@@ -25,6 +25,7 @@ export type AdminProduct = {
   archived: boolean;
   vegetarian: boolean;
   vegan: boolean;
+  featured: boolean;
   spicy: boolean;
   halal: boolean;
   isNew: boolean;

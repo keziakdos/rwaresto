@@ -14,6 +14,7 @@ import {
   Search,
   ShoppingBag,
   Soup,
+  Star,
   Store,
   UtensilsCrossed,
   X,
@@ -192,6 +193,19 @@ export function MenuExperience({
     0,
   );
 
+  const featuredProducts = useMemo(() => {
+    if (!data) return [];
+    const seen = new Set<string>();
+    return data.categories
+      .flatMap((category) => category.products)
+      .filter((product) => {
+        if (!product.featured || !product.available || seen.has(product.id)) return false;
+        seen.add(product.id);
+        return true;
+      })
+      .slice(0, 4);
+  }, [data]);
+
   return (
     <div className="pb-32">
       <section className="relative isolate overflow-hidden bg-[#0d281f] text-white dark:bg-[#0a2119]">
@@ -306,6 +320,71 @@ export function MenuExperience({
             <span className="text-xs font-bold text-amber-800">La carte complète prend le relais à 11h.</span>
           </div>
         </div>
+      ) : null}
+
+      {featuredProducts.length && !query ? (
+        <section className="mx-auto mt-5 w-full max-w-6xl px-4 sm:px-6" aria-labelledby="featured-title">
+          <div className="relative overflow-hidden rounded-[1.8rem] border border-brand/20 bg-[#12352a] p-3 text-white shadow-lift dark:bg-[#0d281f] sm:p-4">
+            <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-brand/20 blur-3xl" />
+            <div className="relative flex flex-wrap items-end justify-between gap-2 px-2 pb-3 pt-1">
+              <div>
+                <p className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#f0b27a]">
+                  <Star className="h-3.5 w-3.5 fill-current" />
+                  Le coup de cœur
+                </p>
+                <h2 id="featured-title" className="mt-1 font-display text-2xl font-semibold sm:text-3xl">
+                  À ne pas manquer
+                </h2>
+              </div>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] font-bold text-white/55">
+                Sélection du moment
+              </span>
+            </div>
+
+            <div className="no-scrollbar relative flex snap-x gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-2 xl:grid-cols-2">
+              {featuredProducts.map((product) => (
+                <button
+                  key={product.id}
+                  type="button"
+                  onClick={() => openProduct(product)}
+                  className="group relative min-h-[17rem] w-[84vw] max-w-[420px] shrink-0 snap-start overflow-hidden rounded-[1.4rem] border border-white/10 text-left shadow-card transition hover:-translate-y-0.5 hover:border-white/25 md:w-auto md:max-w-none sm:min-h-[19rem]"
+                >
+                  {product.image ? (
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 768px) 84vw, 50vw"
+                      className="object-cover transition duration-700 group-hover:scale-[1.04]"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-sand to-brand-soft/50">
+                      <Image src="/logo.png" alt="" width={80} height={80} className="opacity-30" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#120c08]/95 via-[#120c08]/25 to-transparent" />
+                  <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-brand px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[0.1em] text-white shadow-glow">
+                    <Star className="h-3 w-3 fill-current" />
+                    Plat spécial
+                  </span>
+                  <div className="absolute inset-x-0 bottom-0 p-4">
+                    <h3 className="font-display text-2xl font-semibold leading-tight text-white">{product.name}</h3>
+                    <p className="mt-1 line-clamp-2 max-w-md text-[11px] leading-relaxed text-white/65">
+                      {product.description}
+                    </p>
+                    <div className="mt-3 flex items-center justify-between gap-3">
+                      <span className="font-display text-xl font-semibold text-white">{money(product.priceCents)}</span>
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[10px] font-extrabold text-[#12352a] transition group-hover:bg-[#f0b27a]">
+                        Voir le plat
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
       ) : null}
 
       <nav

@@ -175,6 +175,9 @@ export function ProductSheet({
           <span className="absolute left-1/2 top-2.5 h-1.5 w-12 -translate-x-1/2 rounded-full bg-white/60 sm:hidden" />
           <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3.5">
             <div className="flex flex-wrap gap-1">
+              {product.featured ? (
+                <span className="badge border-0 bg-brand/95 text-white backdrop-blur">Plat spécial</span>
+              ) : null}
               <ProductBadges badges={product.badges} />
             </div>
             <button

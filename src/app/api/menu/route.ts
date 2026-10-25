@@ -81,6 +81,7 @@ export async function GET() {
           priceCents: product.priceCents,
           image: product.image,
           available: product.available,
+          featured: product.featured,
           badges: {
             vegetarian: product.vegetarian,
             vegan: product.vegan,

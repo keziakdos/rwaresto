@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Camera, ImagePlus, Loader2, Save, Trash2, X } from "lucide-react";
+import { Camera, ImagePlus, Loader2, Save, Star, Trash2, X } from "lucide-react";
 import type { AdminCategory, AdminOptionGroup, AdminProduct } from "@/lib/admin-types";
 import { useToast } from "../toast-provider";
 
@@ -49,6 +49,7 @@ export function ProductEditor({
   const [file, setFile] = useState<File | null>(null);
   const [available, setAvailable] = useState(product?.available ?? true);
   const [hidden, setHidden] = useState(product?.hidden ?? false);
+  const [featured, setFeatured] = useState(product?.featured ?? false);
   const [optionGroupIds, setOptionGroupIds] = useState<string[]>(
     product?.optionGroups.map((group) => group.optionGroupId) || [],
   );
@@ -134,6 +135,7 @@ export function ProductEditor({
         image: imageUrl,
         available,
         hidden,
+        featured,
         ...badges,
         optionGroupIds,
       };
@@ -303,7 +305,7 @@ export function ProductEditor({
             </div>
           </div>
 
-          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          <div className="mt-4 grid gap-2 sm:grid-cols-3">
             <label className="flex cursor-pointer items-center justify-between rounded-xl border border-line p-3">
               <span>
                 <span className="block text-xs font-extrabold text-ink">Disponible</span>
@@ -325,6 +327,21 @@ export function ProductEditor({
                 type="checkbox"
                 checked={hidden}
                 onChange={(event) => setHidden(event.target.checked)}
+                className="h-5 w-5 accent-[var(--color-brand)]"
+              />
+            </label>
+            <label className={`flex cursor-pointer items-center justify-between rounded-xl border p-3 transition ${featured ? "border-brand bg-brand-soft/50" : "border-line"}`}>
+              <span>
+                <span className="flex items-center gap-1.5 text-xs font-extrabold text-ink">
+                  <Star className={`h-3.5 w-3.5 ${featured ? "fill-brand text-brand" : "text-muted"}`} />
+                  Plat spécial
+                </span>
+                <span className="text-[10px] text-muted">Mis en avant sur le menu</span>
+              </span>
+              <input
+                type="checkbox"
+                checked={featured}
+                onChange={(event) => setFeatured(event.target.checked)}
                 className="h-5 w-5 accent-[var(--color-brand)]"
               />
             </label>

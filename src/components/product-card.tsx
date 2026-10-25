@@ -42,8 +42,13 @@ export function ProductCard({
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d]/45 via-transparent to-transparent opacity-70" />
           <div className="absolute left-2.5 top-2.5 flex flex-wrap gap-1">
-            {product.badges.isNew && !disabled ? (
+            {product.featured && !disabled ? (
               <span className="rounded-full bg-brand px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[0.1em] text-white shadow-glow">
+                Spécial
+              </span>
+            ) : null}
+            {product.badges.isNew && !disabled ? (
+              <span className="rounded-full border border-white/30 bg-white/90 px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[0.1em] text-brand-dark backdrop-blur">
                 Nouveau
               </span>
             ) : null}

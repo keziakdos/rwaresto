@@ -23,6 +23,7 @@ export type MenuProduct = {
   priceCents: number;
   image: string | null;
   available: boolean;
+  featured: boolean;
   badges: {
     vegetarian: boolean;
     vegan: boolean;

@@ -23,6 +23,7 @@ Le site est en production sur `https://rwaresto.rwazap.com`, avec HTTPS, PWA, co
 - Script de vérification HTTP de production ajouté et exécuté avec succès.
 - Script `verify-backup.sh` ajouté pour contrôler l'intégrité des archives sans toucher à la production.
 - Menus spéciaux datés ajoutés à l'administration : dates de début/fin, en plus des horaires de service.
+- Mise en avant des plats ajoutée : case « Plat spécial » dans l'éditeur, section « Le coup de cœur / À ne pas manquer » dans le menu, retrait par simple décoche.
 - Ajout/modification des plats, prix, photos, disponibilité, masquage et archivage vérifiés dans l'admin.
 - Restauration complète testée dans un conteneur temporaire avec la dernière archive Telegram : application démarrée, API config et menu répondues correctement, production non modifiée.
 - Documentation : `docs/EXPLOITATION.md`.
