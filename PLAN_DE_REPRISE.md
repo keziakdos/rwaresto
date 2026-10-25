@@ -30,6 +30,7 @@ Le site est en production sur `https://rwaresto.rwazap.com`, avec HTTPS, PWA, co
 - Nom du site dynamique dans les métadonnées et le manifeste PWA, modifiable dans les paramètres.
 - Script nginx/Certbot rendu générique à partir de `SITE_URL`.
 - README réécrit avec une procédure complète pour débutant.
+- Audit de sécurité réalisé et documenté dans `docs/SECURITE.md` : en-têtes renforcés, conteneur durci, mot de passe minimum 12, limitation par IP des connexions, vérification des secrets.
 - Ajout/modification des plats, prix, photos, disponibilité, masquage et archivage vérifiés dans l'admin.
 - Restauration complète testée dans un conteneur temporaire avec la dernière archive Telegram : application démarrée, API config et menu répondues correctement, production non modifiée.
 - Documentation : `docs/EXPLOITATION.md`.
@@ -67,6 +68,13 @@ Les journaux OpenCode montrent des erreurs `Cannot connect to API` entre 18:35 e
 5. Remplacer les prix/descriptions provisoires par la carte définitive.
 6. Imprimer et vérifier les QR codes des tables.
 7. Faire un audit final mobile, tablette, desktop, mode sombre et accessibilité (le script HTTP est déjà en place).
+
+### Sécurité restante
+
+- Activer UFW et fail2ban (accès `sudo` requis).
+- Vérifier l'exposition publique du port 5678 (n8n).
+- Ajouter une CSP et planifier les mises à jour Zod/Next/Prisma.
+- Envisager la double authentification pour les comptes admin.
 
 ### Plus tard
 
