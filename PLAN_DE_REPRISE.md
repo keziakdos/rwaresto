@@ -24,7 +24,8 @@ Le site est en production sur `https://rwaresto.rwazap.com`, avec HTTPS, PWA, co
 - Script `verify-backup.sh` ajouté pour contrôler l'intégrité des archives sans toucher à la production.
 - Menus spéciaux datés ajoutés à l'administration : dates de début/fin, en plus des horaires de service.
 - Mise en avant des plats ajoutée : case « Plat spécial » dans l'éditeur, section « Le coup de cœur / À ne pas manquer » dans le menu, retrait par simple décoche.
-- Statistiques avancées ajoutées : périodes 7/30/90 jours, CA, ticket moyen, annulations, graphique quotidien, top produits, catégories, heures de pointe, paiements et mix sur place/à emporter.
+- Statistiques avancées ajoutées : périodes 7/30/90 jours, CA, ticket moyen, annulations, graphique quotidien ou hebdomadaire, top produits, catégories, heures de pointe, paiements et mix sur place/à emporter.
+- Détails cliquables des commandes payées, de toutes les commandes, des annulations et des encaissements espèces/carte, avec date et heure.
 - Ajout/modification des plats, prix, photos, disponibilité, masquage et archivage vérifiés dans l'admin.
 - Restauration complète testée dans un conteneur temporaire avec la dernière archive Telegram : application démarrée, API config et menu répondues correctement, production non modifiée.
 - Documentation : `docs/EXPLOITATION.md`.
