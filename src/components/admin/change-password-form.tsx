@@ -96,11 +96,11 @@ export function ChangePasswordForm({ user }: { user: SessionUser }) {
                 value={newPassword}
                 onChange={(event) => setNewPassword(event.target.value)}
                 className="field"
-                minLength={8}
+                minLength={12}
                 required
               />
               <p className="mt-1 text-[11px] text-muted">
-                8 caractères minimum, avec au moins une lettre et un chiffre.
+                12 caractères minimum, avec au moins une lettre et un chiffre.
               </p>
             </div>
             <div>

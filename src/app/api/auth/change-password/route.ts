@@ -22,7 +22,7 @@ const schema = z.object({
   currentPassword: z.string().min(1, "Mot de passe actuel requis."),
   newPassword: z
     .string()
-    .min(8, "Le nouveau mot de passe doit contenir au moins 8 caractères.")
+    .min(12, "Le nouveau mot de passe doit contenir au moins 12 caractères.")
     .max(200)
     .regex(/[A-Za-z]/, "Ajoutez au moins une lettre.")
     .regex(/[0-9]/, "Ajoutez au moins un chiffre."),

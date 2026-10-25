@@ -20,6 +20,15 @@ export async function POST(request: NextRequest) {
     if (!parsed.ok) return parsed.response;
 
     const ip = getClientIp(request);
+    const ipKey = `login-ip:${ip}`;
+    const ipLimit = rateLimit(ipKey, 20, 15 * 60);
+    if (!ipLimit.allowed) {
+      return apiError(
+        `Trop de tentatives. Réessayez dans ${Math.ceil(ipLimit.retryAfter / 60)} minute(s).`,
+        429,
+      );
+    }
+
     const key = `login:${ip}:${parsed.data.username.toLowerCase()}`;
     const limit = rateLimit(key, 6, 15 * 60);
     if (!limit.allowed) {
@@ -43,6 +52,7 @@ export async function POST(request: NextRequest) {
     }
 
     resetRateLimit(key);
+    resetRateLimit(ipKey);
     await setSessionCookie(user);
     await audit({
       actorId: user.id,

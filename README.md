@@ -228,6 +228,7 @@ tests                   Tests Vitest
 ## Documentation
 
 - [Installation et exploitation](docs/EXPLOITATION.md)
+- [Sécurité et recommandations](docs/SECURITE.md)
 - [Déploiement détaillé sur le VPS actuel](docs/DEPLOIEMENT.md)
 - [Plan de reprise](PLAN_DE_REPRISE.md)
 
