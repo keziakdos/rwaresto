@@ -24,6 +24,7 @@ Le site est en production sur `https://rwaresto.rwazap.com`, avec HTTPS, PWA, co
 - Script `verify-backup.sh` ajouté pour contrôler l'intégrité des archives sans toucher à la production.
 - Menus spéciaux datés ajoutés à l'administration : dates de début/fin, en plus des horaires de service.
 - Mise en avant des plats ajoutée : case « Plat spécial » dans l'éditeur, section « Le coup de cœur / À ne pas manquer » dans le menu, retrait par simple décoche.
+- Statistiques avancées ajoutées : périodes 7/30/90 jours, CA, ticket moyen, annulations, graphique quotidien, top produits, catégories, heures de pointe, paiements et mix sur place/à emporter.
 - Ajout/modification des plats, prix, photos, disponibilité, masquage et archivage vérifiés dans l'admin.
 - Restauration complète testée dans un conteneur temporaire avec la dernière archive Telegram : application démarrée, API config et menu répondues correctement, production non modifiée.
 - Documentation : `docs/EXPLOITATION.md`.
@@ -64,12 +65,11 @@ Les journaux OpenCode montrent des erreurs `Cannot connect to API` entre 18:35 e
 
 ### Plus tard
 
-8. Fidélité.
-9. Notifications.
-10. Statistiques avancées.
-11. Multi-langue.
-12. Précommande de créneaux.
-13. Paiement en ligne, en dernier.
+8. Notifications.
+9. Fidélité.
+10. Multi-langue.
+11. Précommande de créneaux.
+12. Paiement en ligne, en dernier.
 
 ## Points de vigilance
 

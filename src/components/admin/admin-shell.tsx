@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowUpRight,
+  BarChart3,
   ClipboardList,
   KeyRound,
   LayoutDashboard,
@@ -21,6 +22,7 @@ import { ThemeToggle } from "../ui/theme-toggle";
 const SHORT_LABELS: Record<string, string> = {
   "/admin/orders": "Commandes",
   "/admin": "Tableau",
+  "/admin/stats": "Stats",
   "/admin/menu": "Menu",
   "/admin/tables": "Tables",
   "/admin/users": "Équipe",
@@ -41,6 +43,7 @@ export function AdminShell({
   const links = [
     { href: "/admin/orders", label: "Commandes", icon: ClipboardList, roles: ["admin", "cashier"] },
     { href: "/admin", label: "Tableau de bord", icon: LayoutDashboard, roles: ["admin"] },
+    { href: "/admin/stats", label: "Statistiques", icon: BarChart3, roles: ["admin"] },
     { href: "/admin/menu", label: "Menu", icon: UtensilsCrossed, roles: ["admin"] },
     { href: "/admin/tables", label: "Tables & QR", icon: QrCode, roles: ["admin"] },
     { href: "/admin/users", label: "Utilisateurs", icon: Users, roles: ["admin"] },
@@ -155,7 +158,7 @@ export function AdminShell({
               </span>
             </Link>
             <div className="flex items-center gap-1">
-              <span className="rounded-full bg-surface px-2.5 py-1 text-[10px] font-extrabold text-muted shadow-sm">
+              <span className="hidden rounded-full bg-surface px-2.5 py-1 text-[10px] font-extrabold text-muted shadow-sm sm:inline-flex">
                 {user.displayName}
               </span>
               <ThemeToggle />
