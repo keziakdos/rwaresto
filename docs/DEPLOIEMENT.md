@@ -1,6 +1,8 @@
 # Déploiement sur le VPS
 
-Cible : `https://rwaresto.rwazap.com` sur le VPS existant, sans modifier les autres sites, conteneurs, certificats ou configurations nginx.
+Ce document décrit le VPS Rwaresto existant et son domaine actuel. Pour une nouvelle installation complète sur un autre VPS, suivez d'abord le guide pas à pas du [README](../README.md).
+
+Cible actuelle : `https://rwaresto.rwazap.com` sur le VPS existant, sans modifier les autres sites, conteneurs, certificats ou configurations nginx.
 
 Le conteneur écoute sur `127.0.0.1:3107`. Le nginx de l'hôte termine TLS et proxyfie vers ce port. Le port 3107 ne doit jamais être exposé publiquement.
 

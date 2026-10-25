@@ -3,7 +3,7 @@ import { prisma } from "./db";
 export type SettingsMap = Record<string, string>;
 
 export const DEFAULT_SETTINGS: SettingsMap = {
-  restaurantName: "Rwaresto",
+  restaurantName: process.env.RESTAURANT_NAME || "Rwaresto",
   tagline: "Des bols généreux, des épices qui voyagent.",
   welcomeMessage: "Composez votre bol, installez-vous, et laissez les saveurs faire le reste.",
   currency: process.env.CURRENCY || "EUR",

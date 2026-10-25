@@ -26,6 +26,10 @@ Le site est en production sur `https://rwaresto.rwazap.com`, avec HTTPS, PWA, co
 - Mise en avant des plats ajoutée : case « Plat spécial » dans l'éditeur, section « Le coup de cœur / À ne pas manquer » dans le menu, retrait par simple décoche.
 - Statistiques avancées ajoutées : périodes 7/30/90 jours, CA, ticket moyen, annulations, graphique quotidien ou hebdomadaire, top produits, catégories, heures de pointe, paiements et mix sur place/à emporter.
 - Détails cliquables des commandes payées, de toutes les commandes, des annulations et des encaissements espèces/carte, avec date et heure.
+- Installation depuis zéro ajoutée : script interactif `scripts/install.sh`, mot de passe admin choisi par l'utilisateur, nom du site initial, `.env` sécurisé.
+- Nom du site dynamique dans les métadonnées et le manifeste PWA, modifiable dans les paramètres.
+- Script nginx/Certbot rendu générique à partir de `SITE_URL`.
+- README réécrit avec une procédure complète pour débutant.
 - Ajout/modification des plats, prix, photos, disponibilité, masquage et archivage vérifiés dans l'admin.
 - Restauration complète testée dans un conteneur temporaire avec la dernière archive Telegram : application démarrée, API config et menu répondues correctement, production non modifiée.
 - Documentation : `docs/EXPLOITATION.md`.

@@ -46,7 +46,7 @@ async function ensureInitialAdmin() {
 
 async function ensureSettings() {
   const defaults: Record<string, string> = {
-    restaurantName: "Rwaresto",
+    restaurantName: process.env.RESTAURANT_NAME || "Rwaresto",
     tagline: "Des bols généreux, des épices qui voyagent.",
     welcomeMessage:
       "Composez votre bol, installez-vous, et laissez les saveurs faire le reste.",

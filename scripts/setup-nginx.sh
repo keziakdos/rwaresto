@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Installation nginx + Certbot pour rwaresto.rwazap.com.
+# Installation nginx + Certbot pour le domaine défini par SITE_URL dans .env.
 # À exécuter en root depuis la racine du dépôt :
 #   sudo bash scripts/setup-nginx.sh
 #
-# Le script ne touche qu'au vhost rwaresto.rwazap.com. Il refuse de continuer
+# Le script ne touche qu'au vhost du domaine configuré. Il refuse de continuer
 # si ce server_name est déjà défini ailleurs.
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -14,7 +14,20 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-DOMAIN="rwaresto.rwazap.com"
+if [ -f "${ROOT_DIR}/.env" ]; then
+  SITE_URL="$(grep -E '^SITE_URL=' "${ROOT_DIR}/.env" | tail -1 | cut -d= -f2- | tr -d '"' || true)"
+  DOMAIN="${SITE_URL#*://}"
+  DOMAIN="${DOMAIN%%/*}"
+fi
+DOMAIN="${DOMAIN:-}"
+if [ -z "${DOMAIN}" ]; then
+  echo "ERREUR : définissez SITE_URL dans .env (ex. https://resto.mondomaine.fr)." >&2
+  exit 1
+fi
+if [[ ! "${DOMAIN}" =~ ^[A-Za-z0-9.-]+$ ]]; then
+  echo "ERREUR : domaine invalide dans SITE_URL : ${DOMAIN}" >&2
+  exit 1
+fi
 DEST="/etc/nginx/sites-available/${DOMAIN}.conf"
 ENABLED="/etc/nginx/sites-enabled/${DOMAIN}.conf"
 BOOTSTRAP="${ROOT_DIR}/deploy/nginx/bootstrap-rwaresto.conf"
